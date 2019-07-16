@@ -12,6 +12,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 import java.util.ListIterator;
+import java.util.Map;
 
 public class ExporterJSON extends Exporter {
     private static final DateFormat formatDate = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssXXX");
@@ -36,7 +37,11 @@ public class ExporterJSON extends Exporter {
         while (it.hasNext()) {
             int i = it.nextIndex();
             Object o = it.next();
-            if (o instanceof Date) {
+            if (o instanceof Tags) {
+                JSONObject tagObject = new JSONObject();
+                for (Map.Entry<String, String> entry : ((Tags) o).getTagsAsMap().entrySet()) tagObject.put(entry.getKey(), entry.getValue());
+                jsonRow.put(header.get(i), tagObject);
+            } else if (o instanceof Date) {
                 try {
                     jsonRow.put(header.get(i), this.formatDate.format((Date) o));
                 } catch (Exception e) {

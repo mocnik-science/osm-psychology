@@ -5,8 +5,7 @@ import org.heigit.bigspatialdata.oshdb.api.db.OSHDBH2;
 import org.heigit.bigspatialdata.oshdb.api.mapreducer.MapReducer;
 import org.heigit.bigspatialdata.oshdb.api.mapreducer.OSMContributionView;
 import org.heigit.bigspatialdata.oshdb.api.object.OSMContribution;
-
-import java.sql.SQLException;
+import org.heigit.bigspatialdata.oshdb.util.tagtranslator.TagTranslator;
 
 public class Data {
     private static Data dataInstance = null;
@@ -18,13 +17,20 @@ public class Data {
     }
 
     private OSHDBDatabase oshdb = null;
+    private TagTranslator tagTranslator = null;
     private BoundingBox bbox = null;
     private String isoDateStart = null;
     private String isoDateEnd = null;
 
-    public static void load(String filename) throws SQLException, ClassNotFoundException {
+    public static void load(String filename) throws Exception {
         Data data = Data.getInstance();
-        data.oshdb = new OSHDBH2(filename.replaceAll("(\\.mv)?\\.db$", ""));
+        OSHDBH2 oshdbH2 = new OSHDBH2(filename.replaceAll("(\\.mv)?\\.db$", ""));
+        data.oshdb = oshdbH2.multithreading(true);
+        data.tagTranslator = new TagTranslator(oshdbH2.getConnection());
+    }
+
+    public static TagTranslator getTagTranslator() {
+        return Data.getInstance().tagTranslator;
     }
 
     public Data with(BoundingBox bbox, String isoDateStart, String isoDateEnd) {

@@ -3,12 +3,16 @@ package com.osm.psychology.core;
 import org.heigit.bigspatialdata.oshdb.api.object.OSMContribution;
 import org.heigit.bigspatialdata.oshdb.util.celliterator.ContributionType;
 import org.heigit.bigspatialdata.oshdb.util.geometry.Geo;
+import org.heigit.bigspatialdata.oshdb.util.tagtranslator.OSMTag;
 import org.locationtech.jts.geom.Geometry;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 
 public abstract class Exporter {
     protected abstract void writeHeader(List<String> header);
@@ -16,6 +20,18 @@ public abstract class Exporter {
     public void close() throws IOException {}
 
     private Set<Col> cols;
+
+    protected class Tags {
+        private List<OSMTag> tags;
+
+        public Tags(List<OSMTag> tags) {
+            this.tags = tags;
+        }
+
+        public Map<String, String> getTagsAsMap() {
+            return this.tags.stream().collect(Collectors.toMap(OSMTag::getKey, OSMTag::getValue));
+        }
+    }
 
     public void init(Col[] cols) {
         this.cols = Cols.process(cols);
@@ -35,7 +51,9 @@ public abstract class Exporter {
         if (this.cols.contains(Col.LENGTH_AFTER)) header.add("LengthAfter");
         if (this.cols.contains(Col.NUMBER_OF_POINTS_AFTER)) header.add("NumberOfPointsAfter");
         if (this.cols.contains(Col.CENTROID_AFTER)) header.addAll(List.of("CentroidLonAfter", "CentroidLatAfter"));
+        if (this.cols.contains(Col.TAGS_BEFORE)) header.add("TagsBefore");
         if (this.cols.contains(Col.NUMBER_OF_TAGS_BEFORE)) header.add("NumberOfTagsBefore");
+        if (this.cols.contains(Col.TAGS_AFTER)) header.add("TagsAfter");
         if (this.cols.contains(Col.NUMBER_OF_TAGS_AFTER)) header.add("NumberOfTagsAfter");
         this.writeHeader(header);
     }
@@ -74,8 +92,22 @@ public abstract class Exporter {
                 row.add(Double.toString(geometryAfter.getCentroid().getY()));
             }
         } else row.addAll(List.of("", "", "", "", "", ""));
+        if (this.cols.contains(Col.TAGS_BEFORE) && contribution.getEntityBefore() != null) {
+            List<OSMTag> tags = StreamSupport
+                    .stream(contribution.getEntityBefore().getTags().spliterator(), true)
+                    .map(Data.getTagTranslator()::getOSMTagOf)
+                    .collect(Collectors.toList());
+            row.add(new Tags(tags));
+        } else row.add("");
         if (this.cols.contains(Col.NUMBER_OF_TAGS_BEFORE) && contribution.getEntityBefore() != null) row.add(contribution.getEntityBefore().getRawTags().length);
         else row.add("");
+        if (this.cols.contains(Col.TAGS_AFTER) && contribution.getEntityAfter() != null) {
+            List<OSMTag> tags = StreamSupport
+                    .stream(contribution.getEntityAfter().getTags().spliterator(), true)
+                    .map(Data.getTagTranslator()::getOSMTagOf)
+                    .collect(Collectors.toList());
+            row.add(new Tags(tags));
+        } else row.add("");
         if (this.cols.contains(Col.NUMBER_OF_TAGS_AFTER) && contribution.getEntityAfter() != null) row.add(contribution.getEntityAfter().getRawTags().length);
         else row.add("");
         this.writeRow(row);

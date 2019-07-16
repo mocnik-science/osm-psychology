@@ -9,6 +9,7 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 public class ExporterCSV extends Exporter {
@@ -40,6 +41,14 @@ public class ExporterCSV extends Exporter {
                     new Exception("Could not export date " + o.toString()).printStackTrace();
                     return "";
                 }
+            }
+            if (o instanceof Tags) {
+                Map<String, String> tags = ((Tags) o).getTagsAsMap();
+                return tags
+                        .keySet()
+                        .stream()
+                        .map(key -> key + "=" + tags.get(key))
+                        .collect(Collectors.joining(","));
             }
             new Exception("Could not export CSV: unknown type of object - " + o.toString()).printStackTrace();
             return "";
