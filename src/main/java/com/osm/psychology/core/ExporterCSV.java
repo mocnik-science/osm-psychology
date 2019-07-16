@@ -35,7 +35,7 @@ public class ExporterCSV extends Exporter {
             if (o instanceof Integer) return Integer.toString((Integer) o);
             if (o instanceof Date) {
                 try {
-                    return formatDate.format((Date) o);
+                    return this.formatDate.format((Date) o);
                 } catch (Exception e) {
                     new Exception("Could not export date " + o.toString()).printStackTrace();
                     return "";
