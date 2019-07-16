@@ -2,6 +2,7 @@ package com.osm.psychology.core;
 
 import com.opencsv.CSVWriter;
 
+import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.List;
@@ -9,9 +10,10 @@ import java.util.List;
 public class ExporterCSV extends Exporter {
     private CSVWriter csvWriter;
 
-    public ExporterCSV(String filename, Col[] cols) throws IOException {
-        FileWriter file = new FileWriter(filename + ".csv");
-        this.csvWriter = new CSVWriter(file);
+    public ExporterCSV(File file, Col[] cols) throws IOException {
+        file.getParentFile().mkdirs();
+        FileWriter fileWriter = new FileWriter(file.getAbsoluteFile() + ".csv");
+        this.csvWriter = new CSVWriter(fileWriter);
         this.init(cols);
     }
 
