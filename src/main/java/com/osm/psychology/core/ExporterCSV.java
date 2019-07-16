@@ -5,10 +5,15 @@ import com.opencsv.CSVWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class ExporterCSV extends Exporter {
     private CSVWriter csvWriter;
+    private static final DateFormat formatDate = new SimpleDateFormat("yyyy-mm-dd hh:mm:ss");
 
     public ExporterCSV(File file, Col[] cols) throws IOException {
         file.getParentFile().mkdirs();
@@ -21,8 +26,17 @@ public class ExporterCSV extends Exporter {
         this.csvWriter.writeNext(header.toArray(new String[0]));
     }
 
-    protected void writeRow(List<String> row) {
-        this.csvWriter.writeNext(row.toArray(new String[0]));
+    protected void writeRow(List<Object> row) {
+        List<String> rowString = row.stream().map(o -> {
+            if (o instanceof String) return (String) o;
+            if (o instanceof Long) return Long.toString((Long) o);
+            if (o instanceof Double) return Double.toString((Double) o);
+            if (o instanceof Integer) return Integer.toString((Integer) o);
+            if (o instanceof Date) return formatDate.format((Date) o);
+            new Exception("Could not export CSV: unknown type of object - " + o.toString()).printStackTrace();
+            return "";
+        }).collect(Collectors.toList());
+        this.csvWriter.writeNext(rowString.toArray(new String[0]));
     }
 
     public void close() throws IOException {
