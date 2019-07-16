@@ -33,7 +33,14 @@ public class ExporterCSV extends Exporter {
             if (o instanceof Long) return Long.toString((Long) o);
             if (o instanceof Double) return Double.toString((Double) o);
             if (o instanceof Integer) return Integer.toString((Integer) o);
-            if (o instanceof Date) return formatDate.format((Date) o);
+            if (o instanceof Date) {
+                try {
+                    return formatDate.format((Date) o);
+                } catch (Exception e) {
+                    new Exception("Could not export date " + o.toString()).printStackTrace();
+                    return "";
+                }
+            }
             new Exception("Could not export CSV: unknown type of object - " + o.toString()).printStackTrace();
             return "";
         }).collect(Collectors.toList());
