@@ -5,6 +5,7 @@ import java.util.Set;
 public class Cols {
     public static Set<Col> process(Col[] cols) {
         Set<Col> cs = Set.of(cols);
+        if (cs.isEmpty()) cs.add(Col.ALL);
         if (cs.contains(Col.ALL)) return Set.of(Col.values());
         if (cs.contains(Col.BEFORE)) cs.addAll(Set.of(Col.GEOMETRY_BEFORE, Col.NUMBER_OF_TAGS_BEFORE));
         if (cs.contains(Col.GEOMETRY_BEFORE)) cs.addAll(Set.of(Col.GEOMETRY_TYPE_BEFORE, Col.AREA_BEFORE, Col.LENGTH_BEFORE, Col.NUMBER_OF_POINTS_BEFORE, Col.CENTROID_BEFORE));
