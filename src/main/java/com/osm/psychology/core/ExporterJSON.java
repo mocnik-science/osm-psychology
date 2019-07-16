@@ -7,11 +7,15 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.Writer;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 import java.util.ListIterator;
 
 public class ExporterJSON extends Exporter {
+    private static final DateFormat formatDate = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssXXX");
+
     private String filename;
     private JSONArray jsonRows = new JSONArray();
     private List<String> header;
@@ -29,7 +33,19 @@ public class ExporterJSON extends Exporter {
     protected void writeRow(List<Object> row) {
         ListIterator<Object> it = row.listIterator();
         JSONObject jsonRow = new JSONObject();
-        while (it.hasNext()) jsonRow.put(header.get(it.nextIndex()), it.next());
+        while (it.hasNext()) {
+            int i = it.nextIndex();
+            Object o = it.next();
+            if (o instanceof Date) {
+                try {
+                    jsonRow.put(header.get(i), this.formatDate.format((Date) o));
+                } catch (Exception e) {
+                    new Exception("Could not export date " + o.toString()).printStackTrace();
+                    jsonRow.put(header.get(i), null);
+                }
+            }
+            else jsonRow.put(header.get(i), o);
+        }
         this.jsonRows.add(jsonRow);
     }
 
@@ -38,7 +54,7 @@ public class ExporterJSON extends Exporter {
         JSONObject jsonObject = new JSONObject();
         JSONObject metadata = new JSONObject();
         metadata.put("creation software", "created by OSM-Psychology, by Maren Mayer <>, Franz-Benjamin Mocnik <mail@mocnik-science.net>, and Daniel W Heck <>");
-        metadata.put("creation date", new Date());
+        metadata.put("creation date", this.formatDate.format(new Date()));
         metadata.put("url", "https://github.com/mocnik-science/osm-psychology");
         jsonObject.put("metadata", metadata);
         jsonObject.put("data", this.jsonRows);
