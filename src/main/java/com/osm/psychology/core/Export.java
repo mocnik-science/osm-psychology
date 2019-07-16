@@ -7,6 +7,10 @@ import java.io.File;
 public class Export {
     private static final String outputPath = "exported-data";
 
+    private static File file(Strategy strategy, BoundingBox bbox, String isoDateStart, String isoDateEnd) {
+        return new File(outputPath, strategy.getName() + "_" + bbox.getName() + "_" + isoDateStart + "-" + isoDateEnd);
+    }
+
     public static void csv(Strategy strategy, Col ... cols) throws Exception {
         Export.csv(strategy, null, null, null, cols);
     }
@@ -20,8 +24,27 @@ public class Export {
     }
 
     public static void csv(Strategy strategy, BoundingBox bbox, String isoDateStart, String isoDateEnd, Col ... cols) throws Exception {
-        File file = new File(outputPath, strategy.getName() + "_" + bbox.getName() + "_" + isoDateStart + "-" + isoDateEnd);
+        File file = Export.file(strategy, bbox, isoDateStart, isoDateEnd);
         Exporter exporter = new ExporterCSV(file, cols);
+        strategy.compute(exporter, Data.getInstance().with(bbox, isoDateStart, isoDateEnd));
+        exporter.close();
+    }
+
+    public static void json(Strategy strategy, Col ... cols) throws Exception {
+        Export.json(strategy, null, null, null, cols);
+    }
+
+    public static void json(Strategy strategy, BoundingBox bbox, Col ... cols) throws Exception {
+        Export.json(strategy, bbox, null, null, cols);
+    }
+
+    public static void json(Strategy strategy, String isoDateStart, String isoDateEnd, Col ... cols) throws Exception {
+        Export.json(strategy, null, isoDateStart, isoDateEnd, cols);
+    }
+
+    public static void json(Strategy strategy, BoundingBox bbox, String isoDateStart, String isoDateEnd, Col ... cols) throws Exception {
+        File file = Export.file(strategy, bbox, isoDateStart, isoDateEnd);
+        Exporter exporter = new ExporterJSON(file, cols);
         strategy.compute(exporter, Data.getInstance().with(bbox, isoDateStart, isoDateEnd));
         exporter.close();
     }
