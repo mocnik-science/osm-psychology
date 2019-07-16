@@ -30,6 +30,7 @@ public class ExporterCSV extends Exporter {
 
     protected void writeRow(List<Object> row) {
         List<String> rowString = row.stream().map(o -> {
+            if (o == null || o instanceof None) return "";
             if (o instanceof String) return (String) o;
             if (o instanceof Long) return Long.toString((Long) o);
             if (o instanceof Double) return Double.toString((Double) o);

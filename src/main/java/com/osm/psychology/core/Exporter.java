@@ -19,6 +19,8 @@ public abstract class Exporter {
     protected abstract void writeRow(List<Object> row);
     public void close() throws IOException {}
 
+    protected final None none = new None();
+
     private Set<Col> cols;
 
     protected class Tags {
@@ -32,6 +34,7 @@ public abstract class Exporter {
             return this.tags.stream().collect(Collectors.toMap(OSMTag::getKey, OSMTag::getValue));
         }
     }
+    protected class None {}
 
     public void init(Col[] cols) {
         this.cols = Cols.process(cols);
@@ -80,7 +83,7 @@ public abstract class Exporter {
                 row.add(Double.toString(geometryBefore.getCentroid().getX()));
                 row.add(Double.toString(geometryBefore.getCentroid().getY()));
             }
-        } else row.addAll(List.of("", "", "", "", "", ""));
+        } else row.addAll(List.of(none, none, none, none, none, none));
         Geometry geometryAfter = contribution.getGeometryBefore();
         if (geometryAfter != null && !geometryAfter.isEmpty()) {
             if (this.cols.contains(Col.GEOMETRY_TYPE_AFTER)) row.add(geometryAfter.getGeometryType());
@@ -91,25 +94,25 @@ public abstract class Exporter {
                 row.add(Double.toString(geometryAfter.getCentroid().getX()));
                 row.add(Double.toString(geometryAfter.getCentroid().getY()));
             }
-        } else row.addAll(List.of("", "", "", "", "", ""));
+        } else row.addAll(List.of(none, none, none, none, none, none));
         if (this.cols.contains(Col.TAGS_BEFORE) && contribution.getEntityBefore() != null) {
             List<OSMTag> tags = StreamSupport
                     .stream(contribution.getEntityBefore().getTags().spliterator(), true)
                     .map(Data.getTagTranslator()::getOSMTagOf)
                     .collect(Collectors.toList());
             row.add(new Tags(tags));
-        } else row.add("");
+        } else row.add(none);
         if (this.cols.contains(Col.NUMBER_OF_TAGS_BEFORE) && contribution.getEntityBefore() != null) row.add(contribution.getEntityBefore().getRawTags().length);
-        else row.add("");
+        else row.add(none);
         if (this.cols.contains(Col.TAGS_AFTER) && contribution.getEntityAfter() != null) {
             List<OSMTag> tags = StreamSupport
                     .stream(contribution.getEntityAfter().getTags().spliterator(), true)
                     .map(Data.getTagTranslator()::getOSMTagOf)
                     .collect(Collectors.toList());
             row.add(new Tags(tags));
-        } else row.add("");
+        } else row.add(none);
         if (this.cols.contains(Col.NUMBER_OF_TAGS_AFTER) && contribution.getEntityAfter() != null) row.add(contribution.getEntityAfter().getRawTags().length);
-        else row.add("");
+        else row.add(none);
         this.writeRow(row);
     }
 }

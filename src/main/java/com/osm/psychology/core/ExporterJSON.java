@@ -37,7 +37,8 @@ public class ExporterJSON extends Exporter {
         while (it.hasNext()) {
             int i = it.nextIndex();
             Object o = it.next();
-            if (o instanceof Tags) {
+            if (o == null || o instanceof None) jsonRow.put(header.get(i), null);
+            else if (o instanceof Tags) {
                 JSONObject tagObject = new JSONObject();
                 for (Map.Entry<String, String> entry : ((Tags) o).getTagsAsMap().entrySet()) tagObject.put(entry.getKey(), entry.getValue());
                 jsonRow.put(header.get(i), tagObject);
