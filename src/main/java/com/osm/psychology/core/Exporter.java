@@ -62,7 +62,7 @@ public abstract class Exporter {
                 row.add(Double.toString(geometryBefore.getCentroid().getX()));
                 row.add(Double.toString(geometryBefore.getCentroid().getY()));
             }
-        }
+        } else row.addAll(List.of("", "", "", "", "", ""));
         Geometry geometryAfter = contribution.getGeometryBefore();
         if (geometryAfter != null && !geometryAfter.isEmpty()) {
             if (this.cols.contains(Col.GEOMETRY_TYPE_AFTER)) row.add(geometryAfter.getGeometryType());
@@ -72,10 +72,12 @@ public abstract class Exporter {
             if (this.cols.contains(Col.CENTROID_AFTER)) {
                 row.add(Double.toString(geometryAfter.getCentroid().getX()));
                 row.add(Double.toString(geometryAfter.getCentroid().getY()));
-            };
-        }
+            }
+        } else row.addAll(List.of("", "", "", "", "", ""));
         if (this.cols.contains(Col.NUMBER_OF_TAGS_BEFORE) && contribution.getEntityBefore() != null) row.add(Integer.toString(contribution.getEntityBefore().getRawTags().length));
+        else row.add("");
         if (this.cols.contains(Col.NUMBER_OF_TAGS_AFTER) && contribution.getEntityAfter() != null) row.add(Integer.toString(contribution.getEntityAfter().getRawTags().length));
+        else row.add("");
         this.writeRow(row);
     };
 }
