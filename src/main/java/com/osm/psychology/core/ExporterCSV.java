@@ -12,7 +12,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public class ExporterCSV extends Exporter {
-    private static final DateFormat formatDate = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+    private static final DateFormat formatDate = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssXXX");
 
     private CSVWriter csvWriter;
 
