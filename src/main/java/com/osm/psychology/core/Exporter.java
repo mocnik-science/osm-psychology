@@ -79,5 +79,5 @@ public abstract class Exporter {
         if (this.cols.contains(Col.NUMBER_OF_TAGS_AFTER) && contribution.getEntityAfter() != null) row.add(Integer.toString(contribution.getEntityAfter().getRawTags().length));
         else row.add("");
         this.writeRow(row);
-    };
+    }
 }
