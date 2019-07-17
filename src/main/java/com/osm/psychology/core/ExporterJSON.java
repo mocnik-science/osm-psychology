@@ -59,7 +59,7 @@ public class ExporterJSON extends Exporter {
         Writer fileWriter = new FileWriter(this.filename);
         JSONObject jsonObject = new JSONObject();
         JSONObject metadata = new JSONObject();
-        metadata.put("creation software", "created by OSM-Psychology, by Maren Mayer <>, Franz-Benjamin Mocnik <mail@mocnik-science.net>, and Daniel W Heck <>");
+        metadata.put("creation software", "created by OSM-Psychology, by Maren Mayer <maren.mayer@students.uni-mannheim.de>, Franz-Benjamin Mocnik <mail@mocnik-science.net>, and Daniel W Heck <heck@uni-mannheim.de>");
         metadata.put("creation date", this.formatDate.format(new Date()));
         metadata.put("url", "https://github.com/mocnik-science/osm-psychology");
         jsonObject.put("metadata", metadata);
