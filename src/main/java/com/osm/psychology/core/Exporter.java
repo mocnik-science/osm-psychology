@@ -84,7 +84,7 @@ public abstract class Exporter {
                 row.add(Double.toString(geometryBefore.getCentroid().getY()));
             }
         } else row.addAll(List.of(none, none, none, none, none, none));
-        Geometry geometryAfter = contribution.getGeometryBefore();
+        Geometry geometryAfter = contribution.getGeometryAfter();
         if (geometryAfter != null && !geometryAfter.isEmpty()) {
             if (this.cols.contains(Col.GEOMETRY_TYPE_AFTER)) row.add(geometryAfter.getGeometryType());
             if (this.cols.contains(Col.AREA_AFTER)) row.add(Geo.areaOf(geometryAfter));
