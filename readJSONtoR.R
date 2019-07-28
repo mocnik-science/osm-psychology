@@ -5,7 +5,7 @@ require(RJSONIO)
 require(tidyverse)
 
 #set working directory to directory with json file
-setwd("directory/of/json/data")
+setwd("D:/OSMdata/exampleData")
 
 OSMjsonToDataframe <- function(file = file) {
   # read json to tibble in R
@@ -27,12 +27,16 @@ OSMjsonToDataframe <- function(file = file) {
   data <- data %>% 
     select(sorting)
   
-  # convert timestamp from character to integer time format
+  #convert timestamp from character to integer time format
   data$Timestamp <-
-    as.POSIXct(gsub("T", " ", data$Timestamp))
+  as.POSIXct(
+    gsub("T", " ", as.character(data$Timestamp)), 
+    format = "%Y-%m-%d %H:%M:%S")
   
   return(data)
 }
 
 data <-
-  OSMjsonToDataframe("data-name.json")
+  OSMjsonToDataframe("Buildings_Heidelberg_2006-01-01-2019-01-01.json")
+
+datacsv <- read.table("Buildings_Heidelberg_2006-01-01-2019-01-01.csv", header = TRUE, sep = ",", dec = ";")
