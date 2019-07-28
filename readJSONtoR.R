@@ -5,7 +5,7 @@ require(RJSONIO)
 require(tidyverse)
 
 #set working directory to directory with json file
-setwd("D:/OSMdata/exampleData")
+setwd("directory/of/json/data")
 
 OSMjsonToDataframe <- function(file = file) {
   # read json to tibble in R
@@ -37,6 +37,4 @@ OSMjsonToDataframe <- function(file = file) {
 }
 
 data <-
-  OSMjsonToDataframe("Buildings_Heidelberg_2006-01-01-2019-01-01.json")
-
-datacsv <- read.table("Buildings_Heidelberg_2006-01-01-2019-01-01.csv", header = TRUE, sep = ",", dec = ";")
+  OSMjsonToDataframe("data-file.json")
