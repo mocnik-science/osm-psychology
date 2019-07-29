@@ -8,7 +8,7 @@ public class Export {
     private static final String outputPath = "exported-data";
 
     private static File file(Strategy strategy, BoundingBox bbox, String isoDateStart, String isoDateEnd) {
-        return new File(outputPath, strategy.getName() + "_" + bbox.getName() + "_" + isoDateStart + "-" + isoDateEnd);
+        return new File(outputPath, strategy.getName() + "_" + ((bbox != null) ? bbox.getName() + "_" : "") + isoDateStart + "-" + isoDateEnd);
     }
 
     public static void csv(Strategy strategy, Col ... cols) throws Exception {
