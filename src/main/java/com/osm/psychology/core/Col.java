@@ -25,4 +25,7 @@ public enum Col {
     NUMBER_OF_TAGS_BEFORE,
     TAGS_AFTER,
     NUMBER_OF_TAGS_AFTER,
+    GEOMETRY,
+    TAGS,
+    BASIC_INFORMATION,
 }

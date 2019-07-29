@@ -11,6 +11,9 @@ public class Cols {
         if (cs.contains(Col.GEOMETRY_BEFORE)) cs.addAll(Set.of(Col.GEOMETRY_TYPE_BEFORE, Col.AREA_BEFORE, Col.LENGTH_BEFORE, Col.NUMBER_OF_POINTS_BEFORE, Col.CENTROID_BEFORE));
         if (cs.contains(Col.AFTER)) cs.addAll(Set.of(Col.GEOMETRY_AFTER, Col.NUMBER_OF_TAGS_AFTER, Col.TAGS_AFTER));
         if (cs.contains(Col.GEOMETRY_AFTER)) cs.addAll(Set.of(Col.GEOMETRY_TYPE_AFTER, Col.AREA_AFTER, Col.LENGTH_AFTER, Col.NUMBER_OF_POINTS_AFTER, Col.CENTROID_AFTER));
+        if (cs.contains(Col.GEOMETRY)) cs.addAll(Set.of(Col.GEOMETRY_BEFORE, Col.GEOMETRY_AFTER));
+        if (cs.contains(Col.TAGS)) cs.addAll(Set.of(Col.NUMBER_OF_TAGS_BEFORE, Col.TAGS_BEFORE, Col.NUMBER_OF_TAGS_AFTER, Col.TAGS_AFTER));
+        if (cs.contains(Col.BASIC_INFORMATION)) cs.addAll((Set.of(Col.OSM_ID, Col.CHANGESET_ID, Col.CONTRIBUTOR_USER_ID, Col.TIMESTAMP, Col.CONTRIBUTION_TYPE)));
         return cs;
     }
 }
