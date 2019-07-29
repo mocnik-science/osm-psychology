@@ -4,23 +4,55 @@ The application `OSM-Psychology` provides a simple tool to generate csv and json
 
 ## Installation
 
-For accessing the OpenStreetMap history data, you will require the current [Java Development Kit] (https://www.oracle.com/technetwork/java/javase/downloads/index.html), and an Integrated Development Environment (IDE) for Java with (Maven Integration) [https://maven.apache.org/] installed.
-For Java-beginners (IntelliJ IDEA IDE)[https://www.jetbrains.com/idea/] is recommended as Maven can be retrieved during the program installation and no separate installation process is necessary. For adding OSM psychology you can either follow this [tutorial] (https://www.jetbrains.com/help/idea/manage-projects-hosted-on-github.html) or download as ZIP, extract at a directory of your choice and add manually to your IDE. 
+For accessing the OpenStreetMap history data, you will require the current [Java Development Kit](https://www.oracle.com/technetwork/java/javase/downloads/index.html), and an Integrated Development Environment (IDE) for Java with [Maven Integration](https://maven.apache.org/) installed.
+For Java-beginners we recommend [IntelliJ IDEA IDE](https://www.jetbrains.com/idea/) as Maven can be installed during the program installation. 
+For adding OSM psychology to IntelliJ IDE you can either follow this [tutorial](https://www.jetbrains.com/help/idea/manage-projects-hosted-on-github.html) or download the project as ZIP, extract it at a directory of your choice and add it manually. 
 
-Lastly, the OpenStreetMap history data can be retrieved from [ohsome] (http://downloads.ohsome.org/v0.5/).
+Lastly, the OpenStreetMap history data can be retrieved from [ohsome](http://downloads.ohsome.org/v0.5/). Due to file size, we recommended to download the smallest possible file for your research. For this documentation, the OSHDB file for Baden-Württemberg is used for all examples.
+
+## Preparation
+
+Open the class Main following the folder structre of src within the Java project. To generate csv and json files, you will only have to edit this Java class.
+
+For specifying an area of interest, a bounding box is needed, which can be obtained [here](http://norbertrenner.de/osm/bbox.html) or can be exported from [OpenStreetMap](https://www.openstreetmap.org/).
 
 ## Example 1
 
-todo
+Get all changes made to buildings in the area of Heidelberg Eppelheim from 2010 to 2018 and export them with basic and geometry information to csv.
+
+We set the path to the previously downloaded OSHDB file and name and set the bounding box accordingly. Lastly, the export statement is specified
+
 ```java
-Data.load("D:/OSMdata/baden-wuerttemberg.oshdb.mv.db");
+Data.load("C:/path/to/your/OSMdata/baden-wuerttemberg.oshdb.mv.db");
 BoundingBox eppelheim = new BoundingBox("Eppelheim", 8.6159, 49.3868, 8.6555, 49.4153);
-Export.csv(new StrategyBuildings(), eppelheim, "2000-01-01", "2019-01-01", Col.ALL);
+Export.csv(new StrategyBuildings(), eppelheim, "2010-01-01", "2018-12-31", Col.BASIC_INFORMATION, Col.GEOMETRY);
+;
 ```
 
 ## Example 2
 
-todo
+Get all changes made to roads in Baden-Württemberg in 2008 and export them with all information available to json.
+We set the path to the previously downloaded OSHDB file. Since no bounding box is specified, the statement is applied to the whole OSHDB file. 
+
+```java
+Data.load("C:/path/to/your/OSMdata/baden-wuerttemberg.oshdb.mv.db");
+Export.json(new StrategyRoads(), "2008-01-01", "2008-12-31", Col.ALL);
+;
+```
+For extracting tag information, json format is recommended. An R script to read the json file to R is provided.
+
+## Example 3
+
+Get all changes ever made to nodes, i.e. single points in space representing e.g. trees, trees, or amenities, in Heidelberg Eppelheim and export them with basic information and the geometric information of the nodes after the change to json.
+We set the path to the previously downloaded OSHDB file. 
+
+```java
+Data.load("C:/path/to/your/OSMdata/baden-wuerttemberg.oshdb.mv.db");
+BoundingBox eppelheim = new BoundingBox("Eppelheim", 8.6159, 49.3868, 8.6555, 49.4153);
+Export.json(new StrategyNodes(), "2008-01-01", "2008-12-31", Col.BASIC_INFORMATION, Col.GEOMETRY_AFTER);
+;
+```
+
 
 ## Related Publications
 
