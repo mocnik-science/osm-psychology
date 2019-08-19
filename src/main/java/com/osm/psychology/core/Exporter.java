@@ -107,24 +107,32 @@ public abstract class Exporter {
             if (this.cols.contains(Col.NUMBER_OF_POINTS_AFTER)) row.add(none);
             if (this.cols.contains(Col.CENTROID_AFTER)) row.addAll(List.of(none, none));
         }
-        if (this.cols.contains(Col.TAGS_BEFORE) && contribution.getEntityBefore() != null) {
-            List<OSMTag> tags = StreamSupport
-                    .stream(contribution.getEntityBefore().getTags().spliterator(), true)
-                    .map(Data.getTagTranslator()::getOSMTagOf)
-                    .collect(Collectors.toList());
-            row.add(new Tags(tags));
-        } else row.add(none);
-        if (this.cols.contains(Col.NUMBER_OF_TAGS_BEFORE) && contribution.getEntityBefore() != null) row.add(contribution.getEntityBefore().getRawTags().length);
-        else row.add(none);
-        if (this.cols.contains(Col.TAGS_AFTER) && contribution.getEntityAfter() != null) {
-            List<OSMTag> tags = StreamSupport
-                    .stream(contribution.getEntityAfter().getTags().spliterator(), true)
-                    .map(Data.getTagTranslator()::getOSMTagOf)
-                    .collect(Collectors.toList());
-            row.add(new Tags(tags));
-        } else row.add(none);
-        if (this.cols.contains(Col.NUMBER_OF_TAGS_AFTER) && contribution.getEntityAfter() != null) row.add(contribution.getEntityAfter().getRawTags().length);
-        else row.add(none);
+        if (this.cols.contains(Col.TAGS_BEFORE)) {
+            if (contribution.getEntityBefore() != null) {
+                List<OSMTag> tags = StreamSupport
+                        .stream(contribution.getEntityBefore().getTags().spliterator(), true)
+                        .map(Data.getTagTranslator()::getOSMTagOf)
+                        .collect(Collectors.toList());
+                row.add(new Tags(tags));
+            } else row.add(none);
+        }
+        if (this.cols.contains(Col.NUMBER_OF_TAGS_BEFORE)) {
+            if (contribution.getEntityBefore() != null) row.add(contribution.getEntityBefore().getRawTags().length);
+            else row.add(none);
+        }
+        if (this.cols.contains(Col.TAGS_AFTER)) {
+            if (contribution.getEntityAfter() != null) {
+                List<OSMTag> tags = StreamSupport
+                        .stream(contribution.getEntityAfter().getTags().spliterator(), true)
+                        .map(Data.getTagTranslator()::getOSMTagOf)
+                        .collect(Collectors.toList());
+                row.add(new Tags(tags));
+            } else row.add(none);
+        }
+        if (this.cols.contains(Col.NUMBER_OF_TAGS_AFTER)) {
+            if (contribution.getEntityAfter() != null) row.add(contribution.getEntityAfter().getRawTags().length);
+            else row.add(none);
+        }
         this.writeRow(row);
     }
 }
