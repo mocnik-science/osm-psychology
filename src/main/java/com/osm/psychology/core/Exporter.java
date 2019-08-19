@@ -101,11 +101,11 @@ public abstract class Exporter {
                 row.add(Double.toString(geometryAfter.getCentroid().getY()));
             }
         } else {
-            if (this.cols.contains(Col.GEOMETRY_TYPE_BEFORE)) row.add(none);
-            if (this.cols.contains(Col.AREA_BEFORE)) row.add(none);
-            if (this.cols.contains(Col.LENGTH_BEFORE)) row.add(none);
-            if (this.cols.contains(Col.NUMBER_OF_POINTS_BEFORE)) row.add(none);
-            if (this.cols.contains(Col.CENTROID_BEFORE)) row.addAll(List.of(none, none));
+            if (this.cols.contains(Col.GEOMETRY_TYPE_AFTER)) row.add(none);
+            if (this.cols.contains(Col.AREA_AFTER)) row.add(none);
+            if (this.cols.contains(Col.LENGTH_AFTER)) row.add(none);
+            if (this.cols.contains(Col.NUMBER_OF_POINTS_AFTER)) row.add(none);
+            if (this.cols.contains(Col.CENTROID_AFTER)) row.addAll(List.of(none, none));
         }
         if (this.cols.contains(Col.TAGS_BEFORE) && contribution.getEntityBefore() != null) {
             List<OSMTag> tags = StreamSupport
