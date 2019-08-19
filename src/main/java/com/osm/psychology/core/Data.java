@@ -25,7 +25,7 @@ public class Data {
     public static void load(String filename) throws Exception {
         Data data = Data.getInstance();
         OSHDBH2 oshdbH2 = new OSHDBH2(filename.replaceAll("(\\.mv)?\\.db$", ""));
-        data.oshdb = oshdbH2.multithreading(true);
+        data.oshdb = oshdbH2.multithreading(false);
         data.tagTranslator = new TagTranslator(oshdbH2.getConnection());
     }
 
