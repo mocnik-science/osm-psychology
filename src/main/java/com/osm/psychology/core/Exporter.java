@@ -84,7 +84,7 @@ public abstract class Exporter {
                 row.add(Double.toString(geometryBefore.getCentroid().getY()));
             }
         } else {
-            if (this.cols.contains(Col.GEOMETRY_TYPE_BEFORE)) row.add(none)
+            if (this.cols.contains(Col.GEOMETRY_TYPE_BEFORE)) row.add(none);
             if (this.cols.contains(Col.AREA_BEFORE)) row.add(none);
             if (this.cols.contains(Col.LENGTH_BEFORE)) row.add(none);
             if (this.cols.contains(Col.NUMBER_OF_POINTS_BEFORE)) row.add(none);
@@ -101,7 +101,7 @@ public abstract class Exporter {
                 row.add(Double.toString(geometryAfter.getCentroid().getY()));
             }
         } else {
-            if (this.cols.contains(Col.GEOMETRY_TYPE_BEFORE)) row.add(none)
+            if (this.cols.contains(Col.GEOMETRY_TYPE_BEFORE)) row.add(none);
             if (this.cols.contains(Col.AREA_BEFORE)) row.add(none);
             if (this.cols.contains(Col.LENGTH_BEFORE)) row.add(none);
             if (this.cols.contains(Col.NUMBER_OF_POINTS_BEFORE)) row.add(none);
