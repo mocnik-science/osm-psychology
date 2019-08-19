@@ -83,7 +83,13 @@ public abstract class Exporter {
                 row.add(Double.toString(geometryBefore.getCentroid().getX()));
                 row.add(Double.toString(geometryBefore.getCentroid().getY()));
             }
-        } else row.addAll(List.of(none, none, none, none, none, none));
+        } else {
+            if (this.cols.contains(Col.GEOMETRY_TYPE_BEFORE)) row.add(none)
+            if (this.cols.contains(Col.AREA_BEFORE)) row.add(none);
+            if (this.cols.contains(Col.LENGTH_BEFORE)) row.add(none);
+            if (this.cols.contains(Col.NUMBER_OF_POINTS_BEFORE)) row.add(none);
+            if (this.cols.contains(Col.CENTROID_BEFORE)) row.addAll(List.of(none, none));
+        }
         Geometry geometryAfter = contribution.getGeometryAfter();
         if (geometryAfter != null && !geometryAfter.isEmpty()) {
             if (this.cols.contains(Col.GEOMETRY_TYPE_AFTER)) row.add(geometryAfter.getGeometryType());
@@ -94,7 +100,13 @@ public abstract class Exporter {
                 row.add(Double.toString(geometryAfter.getCentroid().getX()));
                 row.add(Double.toString(geometryAfter.getCentroid().getY()));
             }
-        } else row.addAll(List.of(none, none, none, none, none, none));
+        } else {
+            if (this.cols.contains(Col.GEOMETRY_TYPE_BEFORE)) row.add(none)
+            if (this.cols.contains(Col.AREA_BEFORE)) row.add(none);
+            if (this.cols.contains(Col.LENGTH_BEFORE)) row.add(none);
+            if (this.cols.contains(Col.NUMBER_OF_POINTS_BEFORE)) row.add(none);
+            if (this.cols.contains(Col.CENTROID_BEFORE)) row.addAll(List.of(none, none));
+        }
         if (this.cols.contains(Col.TAGS_BEFORE) && contribution.getEntityBefore() != null) {
             List<OSMTag> tags = StreamSupport
                     .stream(contribution.getEntityBefore().getTags().spliterator(), true)
