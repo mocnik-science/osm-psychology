@@ -3,7 +3,7 @@
 
 # Overview over the column options
 
-| Code                         | Description                                                  |
+| code                         | description                                                  |
 | ---------------------------- | :----------------------------------------------------------- |
 | Cols.ALL                     | All tags available                                           |
 | Cols.BASIC_INFORMATION       | Includes OSM_ID, CHANGESET_ID, CONTRIBUTOR_USER_ID, TIMESTAMP, and CONTRIBUTION_TYPE |
