@@ -15,7 +15,9 @@ Data.load(file);
 
 ## Arguments
 
-file			path to the OSHDB file.
+| arguments | description             |
+| --------- | ----------------------- |
+| file      | path to the OSHDB file. |
 
 ## Examples
 

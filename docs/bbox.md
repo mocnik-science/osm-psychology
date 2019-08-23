@@ -15,15 +15,15 @@ BoundingBox objectName = new BoundingBox(name, minLon, minLat, maxLon, maxLat);
 
 ## Arguments
 
-name			name given to the respective area. The name indicated in the bounding box is used to name the exported CSV or JSON file.
+| arguments | description                                                  |
+| --------- | ------------------------------------------------------------ |
+| name      | name given to the respective area. The name indicated in the bounding box is used to name the exported CSV or JSON file. |
+| minLon    | minimum longitude of the bounding box.                       |
+| minLat    | minimum latitude of the bounding box.                        |
+| maxLon    | maximum longitude of the bounding box.                       |
+| maxLat    | maximum latitude of the bounding box.                        |
 
-minLon			minimum longitude of the bounding box.
 
-minLat			minimum latitude of the bounding box.
-
-maxLon			maximum longitude of the bounding box.
-
-maxLat			maximum latitude of the bounding box.
 
 ## Examples
 

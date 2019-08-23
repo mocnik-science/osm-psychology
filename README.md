@@ -50,8 +50,8 @@ A R script to read the JSON file into R is provided [here](src-r/readJSONtoR.R)
 ## Usage
 
 Further documentation for the functions can be found on these pages.
-* [Data.load] (docs/load.md) - Setting the path to the OSHDB file
-* [BoundingBox] (docs/bbox.md) - Setting a bounding box
+* [Data.load](docs/load.md) - Setting the path to the OSHDB file
+* [BoundingBox](docs/bbox.md) - Setting a bounding box
 * [Export.**csv**](docs/csv.md) - Exporting data in a CSV file
 * [Export.**json**](docs/json.md) - Exporting data in a JSON file
 
