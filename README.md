@@ -45,7 +45,7 @@ Data.load("C:/path/to/your/OSMdata/baden-wuerttemberg.oshdb.mv.db");
 BoundingBox eppelheim = new BoundingBox("Eppelheim", 8.6159, 49.3868, 8.6555, 49.4153);
 Export.json(new StrategyBuildings(), eppelheim, "2008-01-01", "2008-12-31", Col.BASIC_INFORMATION, Col.TAGS);
 ```
-A R script to read the JSON file into R is provided [here](src-r/readJSONtoR.R)
+A R script to read the JSON file into R is provided [here](src-r/readJSONtoR.R).
 
 ## Usage
 
