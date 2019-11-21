@@ -1,5 +1,5 @@
 import com.osm.psychology.core.*;
-import com.osm.psychology.strategies.StrategyBuildings;
+import com.osm.psychology.strategies.*;
 
 public class Main {
     public static void main(String[] args) throws Exception {
