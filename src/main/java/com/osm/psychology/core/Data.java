@@ -21,6 +21,7 @@ public class Data {
     private OSHDBDatabase oshdb = null;
     private TagTranslator tagTranslator = null;
     private BoundingBox bbox = null;
+    private String isoDate = null;
     private String isoDateStart = null;
     private String isoDateEnd = null;
 
@@ -35,6 +36,14 @@ public class Data {
         return Data.getInstance().tagTranslator;
     }
 
+    public Data with(BoundingBox bbox, String isoDate) {
+        Data data = new Data();
+        data.oshdb = this.oshdb;
+        data.bbox = bbox;
+        data.isoDate = isoDate;
+        return data;
+    }
+
     public Data with(BoundingBox bbox, String isoDateStart, String isoDateEnd) {
         Data data = new Data();
         data.oshdb = this.oshdb;
@@ -44,15 +53,15 @@ public class Data {
         return data;
     }
 
-    public MapReducer<OSMContribution> getOSMContributionView() {
-        MapReducer<OSMContribution> mapReducer = OSMContributionView.on(this.oshdb);
+    public MapReducer<OSMEntitySnapshot> getOSMEntityView() {
+        MapReducer<OSMEntitySnapshot> mapReducer = OSMEntitySnapshotView.on(this.oshdb);
         if (this.bbox != null) mapReducer = mapReducer.areaOfInterest(bbox.getOshdbBoundingBox());
-        if (this.isoDateStart != null && this.isoDateEnd != null) mapReducer = mapReducer.timestamps(this.isoDateStart, this.isoDateEnd);
+        if (this.isoDate != null) mapReducer = mapReducer.timestamps(this.isoDate);
         return mapReducer;
     }
 
-    public MapReducer<OSMEntitySnapshot> getOSMEntityView() {
-        MapReducer<OSMEntitySnapshot> mapReducer = OSMEntitySnapshotView.on(this.oshdb);
+    public MapReducer<OSMContribution> getOSMContributionView() {
+        MapReducer<OSMContribution> mapReducer = OSMContributionView.on(this.oshdb);
         if (this.bbox != null) mapReducer = mapReducer.areaOfInterest(bbox.getOshdbBoundingBox());
         if (this.isoDateStart != null && this.isoDateEnd != null) mapReducer = mapReducer.timestamps(this.isoDateStart, this.isoDateEnd);
         return mapReducer;

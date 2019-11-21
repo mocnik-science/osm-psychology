@@ -21,10 +21,10 @@ public class ExporterJSON extends Exporter {
     private JSONArray jsonRows = new JSONArray();
     private List<String> header;
 
-    public ExporterJSON(File file, ColContr[] cols) throws IOException {
+    public ExporterJSON(File file, QueryType queryType, Col[] cols) throws IOException {
         this.filename = file.getAbsoluteFile() + ".json";
         file.getParentFile().mkdirs();
-        this.init(cols);
+        this.init(cols, queryType);
     }
 
     protected void writeHeader(List<String> header) {

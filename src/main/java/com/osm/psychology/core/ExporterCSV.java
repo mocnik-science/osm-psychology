@@ -17,11 +17,11 @@ public class ExporterCSV extends Exporter {
 
     private CSVWriter csvWriter;
 
-    public ExporterCSV(File file, ColContr[] cols) throws IOException {
+    public ExporterCSV(File file, QueryType queryType, Col[] cols) throws IOException {
         file.getParentFile().mkdirs();
         FileWriter fileWriter = new FileWriter(file.getAbsoluteFile() + ".csv");
         this.csvWriter = new CSVWriter(fileWriter);
-        this.init(cols);
+        this.init(cols, queryType);
     }
 
     protected void writeHeader(List<String> header) {

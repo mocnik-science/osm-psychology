@@ -1,12 +1,19 @@
 package com.osm.psychology.core;
 
-public enum ColContr {
+public enum Col {
     ALL,
     OSM_ID,
     CHANGESET_ID,
     CONTRIBUTOR_USER_ID,
     TIMESTAMP,
     CONTRIBUTION_TYPE,
+    NUMBER_OF_CHANGES,
+    GEOMETRY_INFORMATION,
+    GEOMETRY_TYPE,
+    AREA,
+    LENGTH,
+    NUMBER_OF_POINTS,
+    CENTROID,
     BEFORE,
     GEOMETRY_BEFORE,
     GEOMETRY_TYPE_BEFORE,
@@ -21,11 +28,12 @@ public enum ColContr {
     LENGTH_AFTER,
     NUMBER_OF_POINTS_AFTER,
     CENTROID_AFTER,
+    TAG_INFORMATION,
+    TAGS,
+    NUMBER_OF_TAGS,
     TAGS_BEFORE,
     NUMBER_OF_TAGS_BEFORE,
     TAGS_AFTER,
     NUMBER_OF_TAGS_AFTER,
-    GEOMETRY,
-    TAGS,
     BASIC_INFORMATION,
 }
