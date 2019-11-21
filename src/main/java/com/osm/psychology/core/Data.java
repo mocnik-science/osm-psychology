@@ -4,7 +4,9 @@ import org.heigit.bigspatialdata.oshdb.api.db.OSHDBDatabase;
 import org.heigit.bigspatialdata.oshdb.api.db.OSHDBH2;
 import org.heigit.bigspatialdata.oshdb.api.mapreducer.MapReducer;
 import org.heigit.bigspatialdata.oshdb.api.mapreducer.OSMContributionView;
+import org.heigit.bigspatialdata.oshdb.api.mapreducer.OSMEntitySnapshotView;
 import org.heigit.bigspatialdata.oshdb.api.object.OSMContribution;
+import org.heigit.bigspatialdata.oshdb.api.object.OSMEntitySnapshot;
 import org.heigit.bigspatialdata.oshdb.util.tagtranslator.TagTranslator;
 
 public class Data {
@@ -49,4 +51,10 @@ public class Data {
         return mapReducer;
     }
 
+    public MapReducer<OSMEntitySnapshot> getOSMEntityView() {
+        MapReducer<OSMEntitySnapshot> mapReducer = OSMEntitySnapshotView.on(this.oshdb);
+        if (this.bbox != null) mapReducer = mapReducer.areaOfInterest(bbox.getOshdbBoundingBox());
+        if (this.isoDateStart != null && this.isoDateEnd != null) mapReducer = mapReducer.timestamps(this.isoDateStart, this.isoDateEnd);
+        return mapReducer;
+    }
 }

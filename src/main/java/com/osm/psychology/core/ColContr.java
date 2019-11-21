@@ -1,6 +1,6 @@
 package com.osm.psychology.core;
 
-public enum Col {
+public enum ColContr {
     ALL,
     OSM_ID,
     CHANGESET_ID,

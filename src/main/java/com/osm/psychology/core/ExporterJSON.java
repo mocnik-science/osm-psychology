@@ -21,7 +21,7 @@ public class ExporterJSON extends Exporter {
     private JSONArray jsonRows = new JSONArray();
     private List<String> header;
 
-    public ExporterJSON(File file, Col[] cols) throws IOException {
+    public ExporterJSON(File file, ColContr[] cols) throws IOException {
         this.filename = file.getAbsoluteFile() + ".json";
         file.getParentFile().mkdirs();
         this.init(cols);
