@@ -3,6 +3,7 @@
 # load necessary packages
 require(RJSONIO)
 require(tidyverse)
+require(parsedate)
 
 #set working directory to directory with json file
 setwd("directory/of/json/data")
@@ -29,9 +30,7 @@ OSMjsonToDataframe <- function(file = file) {
   
   #convert timestamp from character to integer time format
   data$Timestamp <-
-  as.POSIXct(
-    gsub("T", " ", as.character(data$Timestamp)), 
-    format = "%Y-%m-%d %H:%M:%S")
+  parsedate::parse_datetime(data$Timestamp)
   
   return(data)
 }
