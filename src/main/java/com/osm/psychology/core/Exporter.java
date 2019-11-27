@@ -82,6 +82,48 @@ public abstract class Exporter {
         this.colsUnusedWarned.clear();
     }
 
+    public void write(OSMEntitySnapshot entity) {
+        List<Object> row = new ArrayList<>();
+        if (this.useCol(Col.OSM_ID)) row.add(entity.getOSHEntity().getId());
+        if (this.useCol(Col.TIMESTAMP)) row.add(entity.getTimestamp().toDate());
+        if (this.useCol(Col.NUMBER_OF_CHANGES)) row.add(Iterables.size(entity.getOSHEntity().getVersions()));
+        Geometry geometry = entity.getGeometry();
+        if (geometry != null && !geometry.isEmpty()) {
+            if (this.useCol(Col.GEOMETRY_TYPE)) row.add(geometry.getGeometryType());
+            if (this.useCol(Col.AREA)) row.add(Geo.areaOf(geometry));
+            if (this.useCol(Col.LENGTH)) row.add(Math.max(Geo.lengthOf(geometry), Geo.lengthOf(geometry.getBoundary())));
+            if (this.useCol(Col.NUMBER_OF_POINTS)) row.add(geometry.getNumPoints());
+            if (this.useCol(Col.CENTROID)) {
+                row.add(Double.toString(geometry.getCentroid().getX()));
+                row.add(Double.toString(geometry.getCentroid().getY()));
+            }
+        } else {
+            if (this.useCol(Col.GEOMETRY_TYPE)) row.add(none);
+            if (this.useCol(Col.AREA)) row.add(none);
+            if (this.useCol(Col.LENGTH)) row.add(none);
+            if (this.useCol(Col.NUMBER_OF_POINTS)) row.add(none);
+            if (this.useCol(Col.CENTROID)) row.addAll(List.of(none, none));
+        }
+        if (this.useCol(Col.TAGS)) {
+            if (entity.getEntity() != null) {
+                List<OSMTag> tags = StreamSupport
+                        .stream(entity.getEntity().getTags().spliterator(), true)
+                        .map(Data.getTagTranslator()::getOSMTagOf)
+                        .collect(Collectors.toList());
+                row.add(new Tags(tags));
+            } else row.add(none);
+        }
+        if (this.useCol(Col.NUMBER_OF_TAGS)) {
+            if (entity.getEntity() != null) row.add(entity.getEntity().getRawTags().length);
+            else row.add(none);
+        }
+        this.writeRow(row);
+        for (Col col : this.cols) if (!this.colsUnusedWarned.contains(col)) {
+            System.out.println("WARNING  Could not output the following column type: " + col);
+            this.colsUnusedWarned.add(col);
+        }
+    }
+
     public void write(OSMContribution contribution) {
         List<Object> row = new ArrayList<>();
         if (this.useCol(Col.OSM_ID)) row.add(contribution.getOSHEntity().getId());
@@ -152,48 +194,6 @@ public abstract class Exporter {
         }
         if (this.useCol(Col.NUMBER_OF_TAGS_AFTER)) {
             if (contribution.getEntityAfter() != null) row.add(contribution.getEntityAfter().getRawTags().length);
-            else row.add(none);
-        }
-        this.writeRow(row);
-        for (Col col : this.cols) if (!this.colsUnusedWarned.contains(col)) {
-            System.out.println("WARNING  Could not output the following column type: " + col);
-            this.colsUnusedWarned.add(col);
-        }
-    }
-
-    public void write(OSMEntitySnapshot entity) {
-        List<Object> row = new ArrayList<>();
-        if (this.useCol(Col.OSM_ID)) row.add(entity.getOSHEntity().getId());
-        if (this.useCol(Col.TIMESTAMP)) row.add(entity.getTimestamp().toDate());
-        if (this.useCol(Col.NUMBER_OF_CHANGES)) row.add(Iterables.size(entity.getOSHEntity().getVersions()));
-        Geometry geometry = entity.getGeometry();
-        if (geometry != null && !geometry.isEmpty()) {
-            if (this.useCol(Col.GEOMETRY_TYPE)) row.add(geometry.getGeometryType());
-            if (this.useCol(Col.AREA)) row.add(Geo.areaOf(geometry));
-            if (this.useCol(Col.LENGTH)) row.add(Math.max(Geo.lengthOf(geometry), Geo.lengthOf(geometry.getBoundary())));
-            if (this.useCol(Col.NUMBER_OF_POINTS)) row.add(geometry.getNumPoints());
-            if (this.useCol(Col.CENTROID)) {
-                row.add(Double.toString(geometry.getCentroid().getX()));
-                row.add(Double.toString(geometry.getCentroid().getY()));
-            }
-        } else {
-            if (this.useCol(Col.GEOMETRY_TYPE)) row.add(none);
-            if (this.useCol(Col.AREA)) row.add(none);
-            if (this.useCol(Col.LENGTH)) row.add(none);
-            if (this.useCol(Col.NUMBER_OF_POINTS)) row.add(none);
-            if (this.useCol(Col.CENTROID)) row.addAll(List.of(none, none));
-        }
-        if (this.useCol(Col.TAGS)) {
-            if (entity.getEntity() != null) {
-                List<OSMTag> tags = StreamSupport
-                        .stream(entity.getEntity().getTags().spliterator(), true)
-                        .map(Data.getTagTranslator()::getOSMTagOf)
-                        .collect(Collectors.toList());
-                row.add(new Tags(tags));
-            } else row.add(none);
-        }
-        if (this.useCol(Col.NUMBER_OF_TAGS)) {
-            if (entity.getEntity() != null) row.add(entity.getEntity().getRawTags().length);
             else row.add(none);
         }
         this.writeRow(row);
