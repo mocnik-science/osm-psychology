@@ -2,6 +2,7 @@ package com.osm.psychology.core;
 
 public enum Col {
     ALL,
+    BASIC_INFORMATION,
     OSM_ID,
     CHANGESET_ID,
     CONTRIBUTOR_USER_ID,
@@ -35,5 +36,4 @@ public enum Col {
     NUMBER_OF_TAGS_BEFORE,
     TAGS_AFTER,
     NUMBER_OF_TAGS_AFTER,
-    BASIC_INFORMATION,
 }
