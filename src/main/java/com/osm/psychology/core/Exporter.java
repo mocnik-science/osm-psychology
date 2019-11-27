@@ -1,6 +1,5 @@
 package com.osm.psychology.core;
 
-import com.google.common.collect.Iterables;
 import org.heigit.bigspatialdata.oshdb.api.object.OSMContribution;
 import org.heigit.bigspatialdata.oshdb.api.object.OSMEntitySnapshot;
 import org.heigit.bigspatialdata.oshdb.util.celliterator.ContributionType;
@@ -20,6 +19,7 @@ public abstract class Exporter {
     protected final None none = new None();
 
     private Set<Col> cols;
+    private Set<Col> colsOriginal;
     private Set<Col> colsUnusedWarned = new HashSet();
 
     private Boolean useCol(Col col) {
@@ -46,7 +46,8 @@ public abstract class Exporter {
     protected class None {}
 
     public void init(Col[] cols, QueryType queryType) {
-        this.cols = Cols.process(cols, queryType);
+        this.colsOriginal = Cols.process(cols, queryType);
+        this.cols = new HashSet(this.colsOriginal);
         List<String> header = new ArrayList<>();
         if (this.useCol(Col.OSM_ID)) header.add("OsmID");
         if (this.useCol(Col.CHANGESET_ID, queryType, QueryType.CONTRIBUTION)) header.add("ChangesetID");
@@ -83,6 +84,7 @@ public abstract class Exporter {
     }
 
     public void write(OSMEntitySnapshot entity) {
+        this.cols = new HashSet(this.colsOriginal);
         List<Object> row = new ArrayList<>();
         if (this.useCol(Col.OSM_ID)) row.add(entity.getOSHEntity().getId());
         if (this.useCol(Col.TIMESTAMP)) row.add(entity.getTimestamp().toDate());
@@ -125,6 +127,7 @@ public abstract class Exporter {
     }
 
     public void write(OSMContribution contribution) {
+        this.cols = new HashSet(this.colsOriginal);
         List<Object> row = new ArrayList<>();
         if (this.useCol(Col.OSM_ID)) row.add(contribution.getOSHEntity().getId());
         if (this.useCol(Col.CHANGESET_ID)) row.add(contribution.getChangesetId());
