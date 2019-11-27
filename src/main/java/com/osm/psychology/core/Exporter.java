@@ -9,10 +9,7 @@ import org.heigit.bigspatialdata.oshdb.util.tagtranslator.OSMTag;
 import org.locationtech.jts.geom.Geometry;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
@@ -23,7 +20,7 @@ public abstract class Exporter {
     protected final None none = new None();
 
     private Set<Col> cols;
-    private Set<Col> colsUnusedWarned;
+    private Set<Col> colsUnusedWarned = new HashSet();
 
     private Boolean useCol(Col col) {
         Boolean result = this.cols.contains(col);
