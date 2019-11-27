@@ -23,8 +23,12 @@ public abstract class Exporter {
     private Set<Col> colsUnusedWarned = new HashSet();
 
     private Boolean useCol(Col col) {
+        this.useCol(col, null, null);
+    }
+    private Boolean useCol(Col col, QueryType queryType, QueryType queryTypeRequired) {
+        if (queryTypeRequired != null && queryType != queryTypeRequired) return false;
         Boolean result = this.cols.contains(col);
-        this.cols.remove(cols);
+        this.cols.remove(col);
         return result;
     }
 
@@ -45,34 +49,32 @@ public abstract class Exporter {
         this.cols = Cols.process(cols, queryType);
         List<String> header = new ArrayList<>();
         if (this.useCol(Col.OSM_ID)) header.add("OsmID");
-        if (this.useCol(Col.CHANGESET_ID)) header.add("ChangesetID");
-        if (this.useCol(Col.CONTRIBUTOR_USER_ID)) header.add("ContributorUserID");
+        if (this.useCol(Col.CHANGESET_ID, queryType, QueryType.CONTRIBUTION)) header.add("ChangesetID");
+        if (this.useCol(Col.CONTRIBUTOR_USER_ID, queryType, QueryType.CONTRIBUTION)) header.add("ContributorUserID");
         if (this.useCol(Col.TIMESTAMP)) header.add("Timestamp");
-        if (this.useCol(Col.CONTRIBUTION_TYPE)) header.addAll(List.of("ContributionTypeCreation", "ContributionTypeDeletion", "ContributionTypeTagChange", "ContributionTypeGeometryChange"));
-        if (this.useCol(Col.GEOMETRY_TYPE)) header.add("GeometryType");
-        if (this.useCol(Col.AREA)) header.add("Area");
-        if (this.useCol(Col.LENGTH)) header.add("Length");
-        if (this.useCol(Col.NUMBER_OF_POINTS)) header.add("NumberOfPoints");
-        if (this.useCol(Col.CENTROID)) header.addAll(List.of("CentroidLon", "CentroidLat"));
-        if (this.useCol(Col.GEOMETRY_TYPE_BEFORE)) header.add("GeometryTypeBefore");
-        if (this.useCol(Col.AREA_BEFORE)) header.add("AreaBefore");
-        if (this.useCol(Col.LENGTH_BEFORE)) header.add("LengthBefore");
-        if (this.useCol(Col.NUMBER_OF_POINTS_BEFORE)) header.add("NumberOfPointsBefore");
-        if (this.useCol(Col.CENTROID_BEFORE)) header.addAll(List.of("CentroidLonBefore", "CentroidLatBefore"));
-        if (this.useCol(Col.GEOMETRY_TYPE_AFTER)) header.add("GeometryTypeAfter");
-        if (this.useCol(Col.AREA_AFTER)) header.add("AreaAfter");
-        if (this.useCol(Col.LENGTH_AFTER)) header.add("LengthAfter");
-        if (this.useCol(Col.NUMBER_OF_POINTS_AFTER)) header.add("NumberOfPointsAfter");
-        if (this.useCol(Col.CENTROID_AFTER)) header.addAll(List.of("CentroidLonAfter", "CentroidLatAfter"));
-        if (this.useCol(Col.TAGS)) header.add("Tags");
-        if (this.useCol(Col.NUMBER_OF_TAGS)) header.add("NumberOfTags");
-        if (this.useCol(Col.TAGS_BEFORE)) header.add("TagsBefore");
-        if (this.useCol(Col.NUMBER_OF_TAGS_BEFORE)) header.add("NumberOfTagsBefore");
-        if (this.useCol(Col.TAGS_AFTER)) header.add("TagsAfter");
-        if (this.useCol(Col.NUMBER_OF_TAGS_AFTER)) header.add("NumberOfTagsAfter");
-
-        if (this.useCol(Col.NUMBER_OF_CHANGES)) header.add("NumberOfChanges");
-
+        if (this.useCol(Col.NUMBER_OF_CHANGES, queryType, QueryType.ENTITY)) header.add("NumberOfChanges");
+        if (this.useCol(Col.CONTRIBUTION_TYPE, queryType, QueryType.CONTRIBUTION)) header.addAll(List.of("ContributionTypeCreation", "ContributionTypeDeletion", "ContributionTypeTagChange", "ContributionTypeGeometryChange"));
+        if (this.useCol(Col.GEOMETRY_TYPE, queryType, QueryType.ENTITY)) header.add("GeometryType");
+        if (this.useCol(Col.AREA, queryType, QueryType.ENTITY)) header.add("Area");
+        if (this.useCol(Col.LENGTH, queryType, QueryType.ENTITY)) header.add("Length");
+        if (this.useCol(Col.NUMBER_OF_POINTS, queryType, QueryType.ENTITY)) header.add("NumberOfPoints");
+        if (this.useCol(Col.CENTROID, queryType, QueryType.ENTITY)) header.addAll(List.of("CentroidLon", "CentroidLat"));
+        if (this.useCol(Col.GEOMETRY_TYPE_BEFORE, queryType, QueryType.CONTRIBUTION)) header.add("GeometryTypeBefore");
+        if (this.useCol(Col.AREA_BEFORE, queryType, QueryType.CONTRIBUTION)) header.add("AreaBefore");
+        if (this.useCol(Col.LENGTH_BEFORE, queryType, QueryType.CONTRIBUTION)) header.add("LengthBefore");
+        if (this.useCol(Col.NUMBER_OF_POINTS_BEFORE, queryType, QueryType.CONTRIBUTION)) header.add("NumberOfPointsBefore");
+        if (this.useCol(Col.CENTROID_BEFORE, queryType, QueryType.CONTRIBUTION)) header.addAll(List.of("CentroidLonBefore", "CentroidLatBefore"));
+        if (this.useCol(Col.GEOMETRY_TYPE_AFTER, queryType, QueryType.CONTRIBUTION)) header.add("GeometryTypeAfter");
+        if (this.useCol(Col.AREA_AFTER, queryType, QueryType.CONTRIBUTION)) header.add("AreaAfter");
+        if (this.useCol(Col.LENGTH_AFTER, queryType, QueryType.CONTRIBUTION)) header.add("LengthAfter");
+        if (this.useCol(Col.NUMBER_OF_POINTS_AFTER, queryType, QueryType.CONTRIBUTION)) header.add("NumberOfPointsAfter");
+        if (this.useCol(Col.CENTROID_AFTER, queryType, QueryType.CONTRIBUTION)) header.addAll(List.of("CentroidLonAfter", "CentroidLatAfter"));
+        if (this.useCol(Col.TAGS, queryType, QueryType.ENTITY)) header.add("Tags");
+        if (this.useCol(Col.NUMBER_OF_TAGS, queryType, QueryType.ENTITY)) header.add("NumberOfTags");
+        if (this.useCol(Col.TAGS_BEFORE, queryType, QueryType.CONTRIBUTION)) header.add("TagsBefore");
+        if (this.useCol(Col.NUMBER_OF_TAGS_BEFORE, queryType, QueryType.CONTRIBUTION)) header.add("NumberOfTagsBefore");
+        if (this.useCol(Col.TAGS_AFTER, queryType, QueryType.CONTRIBUTION)) header.add("TagsAfter");
+        if (this.useCol(Col.NUMBER_OF_TAGS_AFTER, queryType, QueryType.CONTRIBUTION)) header.add("NumberOfTagsAfter");
         this.writeHeader(header);
     }
 
