@@ -19,11 +19,11 @@ import java.util.stream.StreamSupport;
 public abstract class Exporter {
     protected abstract void writeHeader(List<String> header);
     protected abstract void writeRow(List<Object> row);
-    public void close() throws IOException {}
 
     protected final None none = new None();
 
     private Set<Col> cols;
+    private Set<Col> colsUnusedWarned;
 
     private Boolean useCol(Col col) {
         Boolean result = this.cols.contains(col);
@@ -77,6 +77,10 @@ public abstract class Exporter {
         if (this.useCol(Col.NUMBER_OF_CHANGES)) header.add("NumberOfChanges");
 
         this.writeHeader(header);
+    }
+
+    public void close() throws IOException {
+        this.colsUnusedWarned.clear();
     }
 
     public void write(OSMContribution contribution) {
@@ -152,7 +156,10 @@ public abstract class Exporter {
             else row.add(none);
         }
         this.writeRow(row);
-        for (Col col : this.cols) System.out.println("WARNING  Could not output the following column type: " + col);
+        for (Col col : this.cols) if (!this.colsUnusedWarned.contains(col)) {
+            System.out.println("WARNING  Could not output the following column type: " + col);
+            this.colsUnusedWarned.add(col);
+        }
     }
 
     public void write(OSMEntitySnapshot entity) {
@@ -191,6 +198,9 @@ public abstract class Exporter {
             else row.add(none);
         }
         this.writeRow(row);
-        for (Col col : this.cols) System.out.println("WARNING  Could not output the following column type: " + col);
+        for (Col col : this.cols) if (!this.colsUnusedWarned.contains(col)) {
+            System.out.println("WARNING  Could not output the following column type: " + col);
+            this.colsUnusedWarned.add(col);
+        }
     }
 }

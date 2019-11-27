@@ -56,6 +56,7 @@ public class ExporterJSON extends Exporter {
     }
 
     public void close() throws IOException {
+        super.close();
         Writer fileWriter = new FileWriter(this.filename);
         JSONObject jsonObject = new JSONObject();
         JSONObject metadata = new JSONObject();

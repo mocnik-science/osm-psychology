@@ -58,6 +58,7 @@ public class ExporterCSV extends Exporter {
     }
 
     public void close() throws IOException {
+        super.close();
         this.csvWriter.close();
     }
 }
