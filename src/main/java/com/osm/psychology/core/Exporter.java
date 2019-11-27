@@ -23,7 +23,7 @@ public abstract class Exporter {
     private Set<Col> colsUnusedWarned = new HashSet();
 
     private Boolean useCol(Col col) {
-        this.useCol(col, null, null);
+        return this.useCol(col, null, null);
     }
     private Boolean useCol(Col col, QueryType queryType, QueryType queryTypeRequired) {
         if (queryTypeRequired != null && queryType != queryTypeRequired) return false;
