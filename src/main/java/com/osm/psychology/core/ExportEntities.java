@@ -20,7 +20,7 @@ public class ExportEntities {
     }
 
     public static void csv(Strategy strategy, String isoDate, Col... cols) throws Exception {
-        ExportEntities.csv(strategy, isoDate, cols);
+        ExportEntities.csv(strategy, null, isoDate, cols);
     }
 
     public static void csv(Strategy strategy, BoundingBox bbox, String isoDate, Col... cols) throws Exception {
@@ -39,7 +39,7 @@ public class ExportEntities {
     }
 
     public static void json(Strategy strategy, String isoDate, Col... cols) throws Exception {
-        ExportEntities.json(strategy, isoDate, cols);
+        ExportEntities.json(strategy, null, isoDate, cols);
     }
 
     public static void json(Strategy strategy, BoundingBox bbox, String isoDate, Col... cols) throws Exception {
