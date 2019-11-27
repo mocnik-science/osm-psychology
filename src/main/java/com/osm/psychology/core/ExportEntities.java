@@ -8,7 +8,7 @@ public class ExportEntities {
     private static final String outputPath = "exported-data";
 
     private static File file(Strategy strategy, BoundingBox bbox, String isoDate) {
-        return new File(outputPath, strategy.getName() + "_" + ((bbox != null) ? bbox.getName() + "_" : "") + (isoDate != null ? isoDate : ""));
+        return new File(outputPath, "Entities_" + strategy.getName() + "_" + ((bbox != null) ? bbox.getName() + "_" : "") + (isoDate != null ? isoDate : ""));
     }
 
     public static void csv(Strategy strategy, Col... cols) throws Exception {
