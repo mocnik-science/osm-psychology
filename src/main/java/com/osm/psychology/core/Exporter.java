@@ -119,7 +119,7 @@ public abstract class Exporter {
         }
         this.writeRow(row);
         for (Col col : this.cols) if (!this.colsUnusedWarned.contains(col)) {
-            System.out.println("WARNING  Could not output the following column type: " + col);
+            System.out.println("[WARNING]  Could not output the following column type: " + col);
             this.colsUnusedWarned.add(col);
         }
     }
@@ -198,7 +198,7 @@ public abstract class Exporter {
         }
         this.writeRow(row);
         for (Col col : this.cols) if (!this.colsUnusedWarned.contains(col)) {
-            System.out.println("WARNING  Could not output the following column type: " + col);
+            System.out.println("[WARNING]  Could not output the following column type: " + col);
             this.colsUnusedWarned.add(col);
         }
     }
