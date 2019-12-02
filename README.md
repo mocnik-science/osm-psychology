@@ -4,7 +4,7 @@ The application `OSM-Psychology` provides a simple tool to generate csv and json
 
 ## Installation and preparation
 
-For accessing the OpenStreetMap data, you will require the current [Java Development Kit](https://www.oracle.com/technetwork/java/javase/downloads/index.html), and an Integrated Development Environment (IDE) for Java with [Maven Integration](https://maven.apache.org/) installed. Science the IntelliJ IDEA IDE (as recommended below) has Maven included, is no separate installation of Maven necessary. 
+For accessing the OpenStreetMap data, you will require the current [Java Development Kit](https://www.oracle.com/technetwork/java/javase/downloads/index.html), and an Integrated Development Environment (IDE) for Java with [Maven Integration](https://maven.apache.org/) installed. Science the IntelliJ IDEA IDE (as recommended below) has Maven included, no separate installation of Maven is necessary. 
 
 
 For Java beginners, we recommend to follow these instructions: 
@@ -15,7 +15,7 @@ For Java beginners, we recommend to follow these instructions:
 4. Download and install [IntelliJ IDEA IDE](https://www.jetbrains.com/idea/download/). During the installation settings, tick the checkbox for .java to be associated with IntelliJ. 
 5. Run IntelliJ and click "Skip All and Set Default" in the lower right corner. You can previously set an UI theme.
 6. Now the start screen of IntelliJ should appear. Click "Open" and navigate to the directory where you previously exported the program files.
-7. Follow the path structure on the right src > main > java > com.osm.psychology and open the file Main. You only need to edit this file to extract the data!
+7. Follow the path structure on the right //src/main/java/com.osm.psychology and open the file Main. You only need to edit this file to extract the data!
 
 For specifying an area of interest in case not the whole data is used, a bounding box is needed, which can be obtained [here](http://norbertrenner.de/osm/bbox.html) or can be exported from [OpenStreetMap](https://www.openstreetmap.org/).
 
