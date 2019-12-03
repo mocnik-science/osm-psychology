@@ -11,17 +11,17 @@ For Java beginners, we recommend to follow these instructions:
 
 1. Download `OSM-Psychology` by clicking on "Clone or Download" and select "Download ZIP".
 2. Unzip the archive in a directory of your choice. This will be the location where the program is stored and exported files are saved to.
-3. Download the OpenStreetMap history data from [ohsome](http://downloads.ohsome.org/v0.5/) and save it to a directory of your choice. Due to file size, we recommend to download the smallest possible file for your research. In this documentation, the OSHDB file for Heidelberg is used in all examples.
+3. Download the OpenStreetMap history data from [ohsome Data Repository](http://downloads.ohsome.org/v0.5/) and save it to a directory of your choice. Due to file size, we recommend to download the smallest possible file for your research. In this documentation, the OSHDB file for Heidelberg is used in all examples.
 4. Download and install [IntelliJ IDEA IDE](https://www.jetbrains.com/idea/download/). During the installation settings, tick the checkbox for .java to be associated with IntelliJ. 
 5. Run IntelliJ and click "Skip All and Set Default" in the lower right corner. You can previously set an UI theme.
 6. Now the start screen of IntelliJ should appear. Click "Open" and navigate to the directory where you previously exported the program files.
-7. Follow the path structure on the right //src/main/java/com.osm.psychology and open the file Main. You only need to edit this file to extract the data!
+7. Follow the path structure on the right `/src/main/java/com.osm.psychology` and open the file `Main`. You only need to edit this file to extract the data!
 
 For specifying an area of interest in case not the whole data is used, a bounding box is needed, which can be obtained [here](http://norbertrenner.de/osm/bbox.html) or can be exported from [OpenStreetMap](https://www.openstreetmap.org/).
 
 ## Example 1
 
-Get entities in the data (i.e. in Heidelberg) at 2019-01-01 and export those with all available information to csv.
+Get entities in the data (i.e., in Heidelberg) at 2019-01-01 and export those with all available information to csv.
 
 ```java
 Data.load("C:/path/to/your/OSMdata/heidelberg.oshdb.mv.db");
@@ -31,7 +31,7 @@ ExportEntities.csv(new StrategyAll(), "2019-01-01", Col.ALL);
 
 ## Example 2
 
-Get all changes made to roads in Heidelberg in 2008 and export those with basic information to csv.
+Get all changes made to roads in Heidelberg in 2008 and export those with basic information to a csv-formatted file.
 
 ```java
 Data.load("C:/path/to/your/OSMdata/Heidelberg.oshdb.mv.db");
@@ -40,7 +40,7 @@ ExportContributions.csv(new StrategyRoads(), "2008-01-01", "2008-12-31", Col.BAS
 
 ## Example 3
 
-Get all changes made to nodes in Heidelberg Eppelheim and export them with basic information and tag information to json.
+Get all changes made to nodes in Eppelheim, a town near Heidelberg, and export them with basic information and tag information to a json-formatted file.
 
 ```java
 Data.load("C:/path/to/your/OSMdata/Heidelberg.oshdb.mv.db");
