@@ -87,8 +87,8 @@ public abstract class Exporter {
         this.cols = new HashSet(this.colsOriginal);
         List<Object> row = new ArrayList<>();
         if (this.useCol(Col.OSM_ID)) row.add(entity.getOSHEntity().getId());
-        if (this.useCol(Col.TIMESTAMP)) row.add(Tools.entityLastChange(entity).toDate());
-        if (this.useCol(Col.NUMBER_OF_CHANGES)) row.add(Tools.entityNumberOfChanges(entity));
+        if (this.useCol(Col.TIMESTAMP)) row.add(entity.getEntity().getTimestamp().toDate());
+        if (this.useCol(Col.NUMBER_OF_CHANGES)) row.add(entity.getEntity().getVersion());
         Geometry geometry = entity.getGeometry();
         if (geometry != null && !geometry.isEmpty()) {
             if (this.useCol(Col.GEOMETRY_TYPE)) row.add(geometry.getGeometryType());
