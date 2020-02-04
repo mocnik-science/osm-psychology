@@ -30,7 +30,7 @@ OSMjsonToDataframe <- function(file = file) {
   
   #convert timestamp from character to integer time format
   data$Timestamp <-
-  parsedate::parse_datetime(data$Timestamp)
+    parse_datetime(data$Timestamp)
   
   return(data)
 }
