@@ -1,5 +1,6 @@
 package com.osm.psychology.core;
 
+import com.osm.psychology.tools.GeometryTools;
 import org.heigit.bigspatialdata.oshdb.api.object.OSMContribution;
 import org.heigit.bigspatialdata.oshdb.api.object.OSMEntitySnapshot;
 import org.heigit.bigspatialdata.oshdb.util.celliterator.ContributionType;
@@ -92,8 +93,8 @@ public abstract class Exporter {
         Geometry geometry = entity.getGeometry();
         if (geometry != null && !geometry.isEmpty()) {
             if (this.useCol(Col.GEOMETRY_TYPE)) row.add(geometry.getGeometryType());
-            if (this.useCol(Col.AREA)) row.add(Geo.areaOf(geometry));
-            if (this.useCol(Col.LENGTH)) row.add(Math.max(Geo.lengthOf(geometry), Geo.lengthOf(geometry.getBoundary())));
+            if (this.useCol(Col.AREA)) row.add(GeometryTools.areaOf(geometry));
+            if (this.useCol(Col.LENGTH)) row.add(GeometryTools.lengthOf(geometry));
             if (this.useCol(Col.NUMBER_OF_POINTS)) row.add(geometry.getNumPoints());
             if (this.useCol(Col.CENTROID)) {
                 row.add(Double.toString(geometry.getCentroid().getX()));
@@ -142,8 +143,8 @@ public abstract class Exporter {
         Geometry geometryBefore = contribution.getGeometryBefore();
         if (geometryBefore != null && !geometryBefore.isEmpty()) {
             if (this.useCol(Col.GEOMETRY_TYPE_BEFORE)) row.add(geometryBefore.getGeometryType());
-            if (this.useCol(Col.AREA_BEFORE)) row.add(Geo.areaOf(geometryBefore));
-            if (this.useCol(Col.LENGTH_BEFORE)) row.add(Math.max(Geo.lengthOf(geometryBefore), Geo.lengthOf(geometryBefore.getBoundary())));
+            if (this.useCol(Col.AREA_BEFORE)) row.add(GeometryTools.areaOf(geometryBefore));
+            if (this.useCol(Col.LENGTH_BEFORE)) row.add(GeometryTools.lengthOf(geometryBefore));
             if (this.useCol(Col.NUMBER_OF_POINTS_BEFORE)) row.add(geometryBefore.getNumPoints());
             if (this.useCol(Col.CENTROID_BEFORE)) {
                 row.add(Double.toString(geometryBefore.getCentroid().getX()));
@@ -159,8 +160,8 @@ public abstract class Exporter {
         Geometry geometryAfter = contribution.getGeometryAfter();
         if (geometryAfter != null && !geometryAfter.isEmpty()) {
             if (this.useCol(Col.GEOMETRY_TYPE_AFTER)) row.add(geometryAfter.getGeometryType());
-            if (this.useCol(Col.AREA_AFTER)) row.add(Geo.areaOf(geometryAfter));
-            if (this.useCol(Col.LENGTH_AFTER)) row.add(Math.max(Geo.lengthOf(geometryAfter), Geo.lengthOf(geometryAfter.getBoundary())));
+            if (this.useCol(Col.AREA_AFTER)) row.add(GeometryTools.areaOf(geometryAfter));
+            if (this.useCol(Col.LENGTH_AFTER)) row.add(GeometryTools.lengthOf(geometryAfter));
             if (this.useCol(Col.NUMBER_OF_POINTS_AFTER)) row.add(geometryAfter.getNumPoints());
             if (this.useCol(Col.CENTROID_AFTER)) {
                 row.add(Double.toString(geometryAfter.getCentroid().getX()));
