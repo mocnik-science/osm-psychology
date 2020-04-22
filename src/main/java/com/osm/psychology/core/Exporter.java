@@ -61,7 +61,6 @@ public abstract class Exporter {
         if (this.useCol(Col.TIMESTAMP)) header.add("Timestamp");
         if (this.useCol(Col.OSM_TYPE)) header.add("OsmType");
         if (this.useCol(Col.NUMBER_OF_CHANGES, queryType, QueryType.ENTITY)) header.add("NumberOfChanges");
-        header.add("Debug");
         if (this.useCol(Col.CONTRIBUTION_TYPE, queryType, QueryType.CONTRIBUTION)) header.addAll(List.of("ContributionTypeCreation", "ContributionTypeDeletion", "ContributionTypeTagChange", "ContributionTypeGeometryChange"));
         if (this.useCol(Col.GEOMETRY_TYPE, queryType, QueryType.ENTITY)) header.add("GeometryType");
         if (this.useCol(Col.AREA, queryType, QueryType.ENTITY)) header.add("Area");
