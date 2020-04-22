@@ -54,6 +54,7 @@ public abstract class Exporter {
         if (this.useCol(Col.CHANGESET_ID, queryType, QueryType.CONTRIBUTION)) header.add("ChangesetID");
         if (this.useCol(Col.CONTRIBUTOR_USER_ID, queryType, QueryType.CONTRIBUTION)) header.add("ContributorUserID");
         if (this.useCol(Col.TIMESTAMP)) header.add("Timestamp");
+        if (this.useCol(Col.OSM_TYPE)) header.add("OsmType");
         if (this.useCol(Col.NUMBER_OF_CHANGES, queryType, QueryType.ENTITY)) header.add("NumberOfChanges");
         if (this.useCol(Col.CONTRIBUTION_TYPE, queryType, QueryType.CONTRIBUTION)) header.addAll(List.of("ContributionTypeCreation", "ContributionTypeDeletion", "ContributionTypeTagChange", "ContributionTypeGeometryChange"));
         if (this.useCol(Col.GEOMETRY_TYPE, queryType, QueryType.ENTITY)) header.add("GeometryType");
@@ -89,6 +90,7 @@ public abstract class Exporter {
         List<Object> row = new ArrayList<>();
         if (this.useCol(Col.OSM_ID)) row.add(entity.getOSHEntity().getId());
         if (this.useCol(Col.TIMESTAMP)) row.add(entity.getEntity().getTimestamp().toDate());
+        if (this.useCol(Col.OSM_TYPE)) row.add(entity.getEntity().getType().name());
         if (this.useCol(Col.NUMBER_OF_CHANGES)) row.add(entity.getEntity().getVersion());
         Geometry geometry = entity.getGeometry();
         if (geometry != null && !geometry.isEmpty()) {
@@ -134,6 +136,7 @@ public abstract class Exporter {
         if (this.useCol(Col.CHANGESET_ID)) row.add(contribution.getChangesetId());
         if (this.useCol(Col.CONTRIBUTOR_USER_ID)) row.add(contribution.getContributorUserId());
         if (this.useCol(Col.TIMESTAMP)) row.add(contribution.getTimestamp().toDate());
+        if (this.useCol(Col.OSM_TYPE)) row.add(contribution.getOSHEntity().getType().name());
         if (this.useCol(Col.CONTRIBUTION_TYPE)) {
             row.add(contribution.is(ContributionType.CREATION) ? 1 : 0);
             row.add(contribution.is(ContributionType.DELETION) ? 1 : 0);
