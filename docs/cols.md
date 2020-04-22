@@ -9,6 +9,7 @@
 | Col.CHANGESET_ID            | contributions                | ID of the session in which it was changed                    |
 | Col.CONTRIBUTOR_USER_ID     | contributions                | ID of the contributor contributing the change                |
 | Col.TIMESTAMP               | entities<br />contributions  | Entities: Date and time when the last change (current entry) was made<br />Contributions: date and time when the change was made |
+| Col.OSM_TYPE                | entities<br />contributions  | OSM type of the object (node, way, or relation) |
 | Col.CONTRIBUTION_TYPE       | contributions                | Type of the contribution, i.e. Creation, Deletion, Tag Change and / or geometry change |
 | Col.NUMBER_OF_CHANGES       | entities                     | Number of changes made to the object until the date of the entity snapshot |
 | Col.GEOMETRY_TYPE_BEFORE    | contributions                | Geometry type of the object before the change                |
@@ -20,7 +21,7 @@
 | Col.NUMBER_OF_TAGS_BEFORE   | contributions                | Number of tags before the change                             |
 | Col.GEOMETRY_TYPE_AFTER     | contributions                | Geometry type of the object after the change                 |
 | Col.AREA_AFTER              | contributions                | Area of the object after the change                          |
-| Col.LENGTH_AFTER            | contributions                | Length of the object after the change                        |
+| Col.LENGTH_AFTER            | contributions                | Length of the object after the change*                        |
 | Col.NUMBER_OF_POINTS_AFTER  | contributions                | Number of edges in the geometric figure before the change    |
 | Col.CENTROID_AFTER          | contributions                | Longitude and latitude of the object's Euclidean centroid after the change |
 | Col.TAGS_AFTER              | contributions                | List of object tags after the change                         |
@@ -32,7 +33,7 @@
 | Col.TAGS                    | entities<br />contributions  | Entities: List of object tags<br />Contributions: Col.TAGS_BEFORE, and Col.TAGS_AFTER |
 | Col.NUMBER_OF_TAGS          | entities<br />contributions  | Entities: Number of tags<br />Contributions: Col.NUMBER_OF_TAGS_BEFORE, and Col.NUMBER_OF_TAGS_AFTER |
 | Col.ALL                     | entities <br />contributions | All columns available for either entities or contributions   |
-| Col.BASIC_INFORMATION       | entities<br />contributions  | Entities: OSM_ID, TIMESTAMP, and NUMBER_OF_CHANGES<br />Contributions: OSM_ID, CHANGESET_ID, CONTRIBUTOR_USER_ID, TIMESTAMP, and CONTRIBUTION_TYPE |
+| Col.BASIC_INFORMATION       | entities<br />contributions  | Entities: OSM_ID, TIMESTAMP, OSM_TYPE, and NUMBER_OF_CHANGES<br />Contributions: OSM_ID, CHANGESET_ID, CONTRIBUTOR_USER_ID, TIMESTAMP, OSM_TYPE, and CONTRIBUTION_TYPE |
 | Col.BEFORE                  | contributions                | All information of the object before the change              |
 | Col.AFTER                   | contributions                | All information of the object after the change               |
 | Col.GEOMETRY_INFORMATION    | entities<br />contributions  | Entities: all geometric information<br />Contributions: all geometric information before and after the change |
