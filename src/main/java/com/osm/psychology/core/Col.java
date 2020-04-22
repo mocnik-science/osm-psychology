@@ -4,6 +4,7 @@ public enum Col {
     ALL,
     BASIC_INFORMATION,
     OSM_ID,
+    OBJECT_ID,
     CHANGESET_ID,
     CONTRIBUTOR_USER_ID,
     TIMESTAMP,

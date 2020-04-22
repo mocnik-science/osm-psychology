@@ -3,6 +3,10 @@ package com.osm.psychology.core;
 import com.osm.psychology.tools.GeometryTools;
 import org.heigit.bigspatialdata.oshdb.api.object.OSMContribution;
 import org.heigit.bigspatialdata.oshdb.api.object.OSMEntitySnapshot;
+import org.heigit.bigspatialdata.oshdb.osh.OSHEntity;
+import org.heigit.bigspatialdata.oshdb.osm.OSMEntity;
+import org.heigit.bigspatialdata.oshdb.osm.OSMRelation;
+import org.heigit.bigspatialdata.oshdb.osm.OSMType;
 import org.heigit.bigspatialdata.oshdb.util.celliterator.ContributionType;
 import org.heigit.bigspatialdata.oshdb.util.geometry.Geo;
 import org.heigit.bigspatialdata.oshdb.util.tagtranslator.OSMTag;
@@ -51,11 +55,13 @@ public abstract class Exporter {
         this.cols = new HashSet(this.colsOriginal);
         List<String> header = new ArrayList<>();
         if (this.useCol(Col.OSM_ID)) header.add("OsmID");
+        if (this.useCol(Col.OBJECT_ID)) header.add("ObjectID");
         if (this.useCol(Col.CHANGESET_ID, queryType, QueryType.CONTRIBUTION)) header.add("ChangesetID");
         if (this.useCol(Col.CONTRIBUTOR_USER_ID, queryType, QueryType.CONTRIBUTION)) header.add("ContributorUserID");
         if (this.useCol(Col.TIMESTAMP)) header.add("Timestamp");
         if (this.useCol(Col.OSM_TYPE)) header.add("OsmType");
         if (this.useCol(Col.NUMBER_OF_CHANGES, queryType, QueryType.ENTITY)) header.add("NumberOfChanges");
+        header.add("Debug");
         if (this.useCol(Col.CONTRIBUTION_TYPE, queryType, QueryType.CONTRIBUTION)) header.addAll(List.of("ContributionTypeCreation", "ContributionTypeDeletion", "ContributionTypeTagChange", "ContributionTypeGeometryChange"));
         if (this.useCol(Col.GEOMETRY_TYPE, queryType, QueryType.ENTITY)) header.add("GeometryType");
         if (this.useCol(Col.AREA, queryType, QueryType.ENTITY)) header.add("Area");
@@ -88,10 +94,13 @@ public abstract class Exporter {
     public void write(OSMEntitySnapshot entity) {
         this.cols = new HashSet(this.colsOriginal);
         List<Object> row = new ArrayList<>();
-        if (this.useCol(Col.OSM_ID)) row.add(entity.getOSHEntity().getId());
-        if (this.useCol(Col.TIMESTAMP)) row.add(entity.getEntity().getTimestamp().toDate());
-        if (this.useCol(Col.OSM_TYPE)) row.add(entity.getEntity().getType().name());
-        if (this.useCol(Col.NUMBER_OF_CHANGES)) row.add(entity.getEntity().getVersion());
+        OSMEntity object = entity.getEntity();
+        if (this.useCol(Col.OSM_ID)) row.add(object.getType().toString().toLowerCase()+"/"+object.getId());
+        if (this.useCol(Col.OBJECT_ID)) row.add(object.getId());
+        if (this.useCol(Col.TIMESTAMP)) row.add(object.getTimestamp().toDate());
+        if (this.useCol(Col.OSM_TYPE)) row.add(object.getType().name());
+        if (this.useCol(Col.NUMBER_OF_CHANGES)) row.add(object.getVersion());
+
         Geometry geometry = entity.getGeometry();
         if (geometry != null && !geometry.isEmpty()) {
             if (this.useCol(Col.GEOMETRY_TYPE)) row.add(geometry.getGeometryType());
@@ -119,7 +128,7 @@ public abstract class Exporter {
             } else row.add(none);
         }
         if (this.useCol(Col.NUMBER_OF_TAGS)) {
-            if (entity.getEntity() != null) row.add(entity.getEntity().getRawTags().length);
+            if (entity.getEntity() != null) row.add(entity.getEntity().getRawTags().length / 2);
             else row.add(none);
         }
         this.writeRow(row);
@@ -132,11 +141,13 @@ public abstract class Exporter {
     public void write(OSMContribution contribution) {
         this.cols = new HashSet(this.colsOriginal);
         List<Object> row = new ArrayList<>();
-        if (this.useCol(Col.OSM_ID)) row.add(contribution.getOSHEntity().getId());
+        OSHEntity object = contribution.getOSHEntity();
+        if (this.useCol(Col.OSM_ID)) row.add(object.getType().toString().toLowerCase()+"/"+contribution.getOSHEntity().getId());
+        if (this.useCol(Col.OBJECT_ID)) row.add(object.getId());
         if (this.useCol(Col.CHANGESET_ID)) row.add(contribution.getChangesetId());
         if (this.useCol(Col.CONTRIBUTOR_USER_ID)) row.add(contribution.getContributorUserId());
         if (this.useCol(Col.TIMESTAMP)) row.add(contribution.getTimestamp().toDate());
-        if (this.useCol(Col.OSM_TYPE)) row.add(contribution.getOSHEntity().getType().name());
+        if (this.useCol(Col.OSM_TYPE)) row.add(object.getType().name());
         if (this.useCol(Col.CONTRIBUTION_TYPE)) {
             row.add(contribution.is(ContributionType.CREATION) ? 1 : 0);
             row.add(contribution.is(ContributionType.DELETION) ? 1 : 0);
@@ -187,7 +198,7 @@ public abstract class Exporter {
             } else row.add(none);
         }
         if (this.useCol(Col.NUMBER_OF_TAGS_BEFORE)) {
-            if (contribution.getEntityBefore() != null) row.add(contribution.getEntityBefore().getRawTags().length);
+            if (contribution.getEntityBefore() != null) row.add(contribution.getEntityBefore().getRawTags().length / 2);
             else row.add(none);
         }
         if (this.useCol(Col.TAGS_AFTER)) {
@@ -200,7 +211,7 @@ public abstract class Exporter {
             } else row.add(none);
         }
         if (this.useCol(Col.NUMBER_OF_TAGS_AFTER)) {
-            if (contribution.getEntityAfter() != null) row.add(contribution.getEntityAfter().getRawTags().length);
+            if (contribution.getEntityAfter() != null) row.add(contribution.getEntityAfter().getRawTags().length / 2);
             else row.add(none);
         }
         this.writeRow(row);
