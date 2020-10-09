@@ -15,7 +15,7 @@ public class Cols {
             if (cs.contains(Col.GEOMETRY_INFORMATION)) cs.addAll(Set.of(Col.GEOMETRY_TYPE, Col.AREA, Col.LENGTH, Col.NUMBER_OF_POINTS, Col.CENTROID));
             if (cs.contains(Col.TAG_INFORMATION)) cs.addAll(Set.of(Col.NUMBER_OF_TAGS, Col.TAGS));
         } else if (queryType == QueryType.CONTRIBUTION) {
-            if (cs.contains(Col.BASIC_INFORMATION)) cs.addAll(Set.of(Col.OSM_ID, Col.OBJECT_ID, Col.CHANGESET_ID, Col.CONTRIBUTOR_USER_ID, Col.TIMESTAMP, Col.OSM_TYPE, Col.CONTRIBUTION_TYPE));
+            if (cs.contains(Col.BASIC_INFORMATION)) cs.addAll(Set.of(Col.OSM_ID, Col.OBJECT_ID, Col.CHANGESET_ID, Col.CONTRIBUTOR_USER_ID, Col.TIMESTAMP, Col.OSM_TYPE, Col.NUMBER_OF_CHANGES_BEFORE, Col.NUMBER_OF_CHANGES_AFTER, Col.CONTRIBUTION_TYPE));
             if (cs.contains(Col.GEOMETRY_INFORMATION)) cs.addAll(Set.of(Col.GEOMETRY_BEFORE, Col.GEOMETRY_AFTER));
             if (cs.contains(Col.BEFORE)) cs.addAll(Set.of(Col.GEOMETRY_BEFORE, Col.NUMBER_OF_TAGS_BEFORE, Col.TAGS_BEFORE));
             if (cs.contains(Col.GEOMETRY_BEFORE)) cs.addAll(Set.of(Col.GEOMETRY_TYPE_BEFORE, Col.AREA_BEFORE, Col.LENGTH_BEFORE, Col.NUMBER_OF_POINTS_BEFORE, Col.CENTROID_BEFORE));
