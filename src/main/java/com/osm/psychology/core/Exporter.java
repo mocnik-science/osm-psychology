@@ -93,134 +93,142 @@ public abstract class Exporter {
     }
 
     public void write(OSMEntitySnapshot entity) {
-        this.cols = new HashSet(this.colsOriginal);
-        List<Object> row = new ArrayList<>();
-        OSMEntity object = entity.getEntity();
-        if (this.useCol(Col.OSM_ID)) row.add(object.getType().toString().toLowerCase()+"/"+object.getId());
-        if (this.useCol(Col.OBJECT_ID)) row.add(object.getId());
-        if (this.useCol(Col.TIMESTAMP)) row.add(object.getTimestamp().toDate());
-        if (this.useCol(Col.OSM_TYPE)) row.add(object.getType().name());
-        if (this.useCol(Col.NUMBER_OF_CHANGES)) row.add(object.getVersion());
+        try {
+            this.cols = new HashSet(this.colsOriginal);
+            List<Object> row = new ArrayList<>();
+            OSMEntity object = entity.getEntity();
+            if (this.useCol(Col.OSM_ID)) row.add(object.getType().toString().toLowerCase() + "/" + object.getId());
+            if (this.useCol(Col.OBJECT_ID)) row.add(object.getId());
+            if (this.useCol(Col.TIMESTAMP)) row.add(object.getTimestamp().toDate());
+            if (this.useCol(Col.OSM_TYPE)) row.add(object.getType().name());
+            if (this.useCol(Col.NUMBER_OF_CHANGES)) row.add(object.getVersion());
 
-        Geometry geometry = entity.getGeometry();
-        if (geometry != null && !geometry.isEmpty()) {
-            if (this.useCol(Col.GEOMETRY_TYPE)) row.add(geometry.getGeometryType());
-            if (this.useCol(Col.AREA)) row.add(GeometryTools.areaOf(geometry));
-            if (this.useCol(Col.LENGTH)) row.add(GeometryTools.lengthOf(geometry));
-            if (this.useCol(Col.NUMBER_OF_POINTS)) row.add(geometry.getNumPoints());
-            if (this.useCol(Col.CENTROID)) {
-                row.add(Double.toString(geometry.getCentroid().getX()));
-                row.add(Double.toString(geometry.getCentroid().getY()));
+            Geometry geometry = entity.getGeometry();
+            if (geometry != null && !geometry.isEmpty()) {
+                if (this.useCol(Col.GEOMETRY_TYPE)) row.add(geometry.getGeometryType());
+                if (this.useCol(Col.AREA)) row.add(GeometryTools.areaOf(geometry));
+                if (this.useCol(Col.LENGTH)) row.add(GeometryTools.lengthOf(geometry));
+                if (this.useCol(Col.NUMBER_OF_POINTS)) row.add(geometry.getNumPoints());
+                if (this.useCol(Col.CENTROID)) {
+                    row.add(Double.toString(geometry.getCentroid().getX()));
+                    row.add(Double.toString(geometry.getCentroid().getY()));
+                }
+            } else {
+                if (this.useCol(Col.GEOMETRY_TYPE)) row.add(none);
+                if (this.useCol(Col.AREA)) row.add(none);
+                if (this.useCol(Col.LENGTH)) row.add(none);
+                if (this.useCol(Col.NUMBER_OF_POINTS)) row.add(none);
+                if (this.useCol(Col.CENTROID)) row.addAll(List.of(none, none));
             }
-        } else {
-            if (this.useCol(Col.GEOMETRY_TYPE)) row.add(none);
-            if (this.useCol(Col.AREA)) row.add(none);
-            if (this.useCol(Col.LENGTH)) row.add(none);
-            if (this.useCol(Col.NUMBER_OF_POINTS)) row.add(none);
-            if (this.useCol(Col.CENTROID)) row.addAll(List.of(none, none));
-        }
-        if (this.useCol(Col.TAGS)) {
-            if (entity.getEntity() != null) {
-                List<OSMTag> tags = StreamSupport
-                        .stream(entity.getEntity().getTags().spliterator(), true)
-                        .map(Data.getTagTranslator()::getOSMTagOf)
-                        .collect(Collectors.toList());
-                row.add(new Tags(tags));
-            } else row.add(none);
-        }
-        if (this.useCol(Col.NUMBER_OF_TAGS)) {
-            if (entity.getEntity() != null) row.add(entity.getEntity().getRawTags().length / 2);
-            else row.add(none);
-        }
-        this.writeRow(row);
-        for (Col col : this.cols) if (!this.colsUnusedWarned.contains(col)) {
-            System.out.println("[WARNING]  Could not output the following column type: " + col);
-            this.colsUnusedWarned.add(col);
+            if (this.useCol(Col.TAGS)) {
+                if (entity.getEntity() != null) {
+                    List<OSMTag> tags = StreamSupport
+                            .stream(entity.getEntity().getTags().spliterator(), true)
+                            .map(Data.getTagTranslator()::getOSMTagOf)
+                            .collect(Collectors.toList());
+                    row.add(new Tags(tags));
+                } else row.add(none);
+            }
+            if (this.useCol(Col.NUMBER_OF_TAGS)) {
+                if (entity.getEntity() != null) row.add(entity.getEntity().getRawTags().length / 2);
+                else row.add(none);
+            }
+            this.writeRow(row);
+            for (Col col : this.cols) if (!this.colsUnusedWarned.contains(col)) {
+                System.out.println("[WARNING]  Could not output the following column type: " + col);
+                this.colsUnusedWarned.add(col);
+            }
+        } catch (Exception e) {
+            System.out.println("[WARNING]  An error occurred while creating the output for the following OSM entity: " + entity.getEntity().getType().name() + " " + entity.getEntity().getId());
         }
     }
 
     public void write(OSMContribution contribution) {
-        this.cols = new HashSet(this.colsOriginal);
-        List<Object> row = new ArrayList<>();
-        OSHEntity object = contribution.getOSHEntity();
-        if (this.useCol(Col.OSM_ID)) row.add(object.getType().toString().toLowerCase() + "/" + contribution.getOSHEntity().getId());
-        if (this.useCol(Col.OBJECT_ID)) row.add(object.getId());
-        if (this.useCol(Col.CHANGESET_ID)) row.add(contribution.getChangesetId());
-        if (this.useCol(Col.CONTRIBUTOR_USER_ID)) row.add(contribution.getContributorUserId());
-        if (this.useCol(Col.TIMESTAMP)) row.add(contribution.getTimestamp().toDate());
-        if (this.useCol(Col.OSM_TYPE)) row.add(object.getType().name());
-        if( this.useCol(Col.NUMBER_OF_CHANGES_BEFORE)) row.add(contribution.getEntityBefore().getVersion());
-        if( this.useCol(Col.NUMBER_OF_CHANGES_AFTER)) row.add(contribution.getEntityAfter().getVersion());
-        if (this.useCol(Col.CONTRIBUTION_TYPE)) {
-            row.add(contribution.is(ContributionType.CREATION) ? 1 : 0);
-            row.add(contribution.is(ContributionType.DELETION) ? 1 : 0);
-            row.add(contribution.is(ContributionType.TAG_CHANGE) ? 1 : 0);
-            row.add(contribution.is(ContributionType.GEOMETRY_CHANGE) ? 1 : 0);
-        }
-        Geometry geometryBefore = contribution.getGeometryBefore();
-        if (geometryBefore != null && !geometryBefore.isEmpty()) {
-            if (this.useCol(Col.GEOMETRY_TYPE_BEFORE)) row.add(geometryBefore.getGeometryType());
-            if (this.useCol(Col.AREA_BEFORE)) row.add(GeometryTools.areaOf(geometryBefore));
-            if (this.useCol(Col.LENGTH_BEFORE)) row.add(GeometryTools.lengthOf(geometryBefore));
-            if (this.useCol(Col.NUMBER_OF_POINTS_BEFORE)) row.add(geometryBefore.getNumPoints());
-            if (this.useCol(Col.CENTROID_BEFORE)) {
-                row.add(Double.toString(geometryBefore.getCentroid().getX()));
-                row.add(Double.toString(geometryBefore.getCentroid().getY()));
+        try {
+            this.cols = new HashSet(this.colsOriginal);
+            List<Object> row = new ArrayList<>();
+            OSHEntity object = contribution.getOSHEntity();
+            if (this.useCol(Col.OSM_ID)) row.add(object.getType().toString().toLowerCase() + "/" + contribution.getOSHEntity().getId());
+            if (this.useCol(Col.OBJECT_ID)) row.add(object.getId());
+            if (this.useCol(Col.CHANGESET_ID)) row.add(contribution.getChangesetId());
+            if (this.useCol(Col.CONTRIBUTOR_USER_ID)) row.add(contribution.getContributorUserId());
+            if (this.useCol(Col.TIMESTAMP)) row.add(contribution.getTimestamp().toDate());
+            if (this.useCol(Col.OSM_TYPE)) row.add(object.getType().name());
+            if( this.useCol(Col.NUMBER_OF_CHANGES_BEFORE)) row.add(contribution.getEntityBefore().getVersion());
+            if( this.useCol(Col.NUMBER_OF_CHANGES_AFTER)) row.add(contribution.getEntityAfter().getVersion());
+            if (this.useCol(Col.CONTRIBUTION_TYPE)) {
+                row.add(contribution.is(ContributionType.CREATION) ? 1 : 0);
+                row.add(contribution.is(ContributionType.DELETION) ? 1 : 0);
+                row.add(contribution.is(ContributionType.TAG_CHANGE) ? 1 : 0);
+                row.add(contribution.is(ContributionType.GEOMETRY_CHANGE) ? 1 : 0);
             }
-        } else {
-            if (this.useCol(Col.GEOMETRY_TYPE_BEFORE)) row.add(none);
-            if (this.useCol(Col.AREA_BEFORE)) row.add(none);
-            if (this.useCol(Col.LENGTH_BEFORE)) row.add(none);
-            if (this.useCol(Col.NUMBER_OF_POINTS_BEFORE)) row.add(none);
-            if (this.useCol(Col.CENTROID_BEFORE)) row.addAll(List.of(none, none));
-        }
-        Geometry geometryAfter = contribution.getGeometryAfter();
-        if (geometryAfter != null && !geometryAfter.isEmpty()) {
-            if (this.useCol(Col.GEOMETRY_TYPE_AFTER)) row.add(geometryAfter.getGeometryType());
-            if (this.useCol(Col.AREA_AFTER)) row.add(GeometryTools.areaOf(geometryAfter));
-            if (this.useCol(Col.LENGTH_AFTER)) row.add(GeometryTools.lengthOf(geometryAfter));
-            if (this.useCol(Col.NUMBER_OF_POINTS_AFTER)) row.add(geometryAfter.getNumPoints());
-            if (this.useCol(Col.CENTROID_AFTER)) {
-                row.add(Double.toString(geometryAfter.getCentroid().getX()));
-                row.add(Double.toString(geometryAfter.getCentroid().getY()));
+            Geometry geometryBefore = contribution.getGeometryBefore();
+            if (geometryBefore != null && !geometryBefore.isEmpty()) {
+                if (this.useCol(Col.GEOMETRY_TYPE_BEFORE)) row.add(geometryBefore.getGeometryType());
+                if (this.useCol(Col.AREA_BEFORE)) row.add(GeometryTools.areaOf(geometryBefore));
+                if (this.useCol(Col.LENGTH_BEFORE)) row.add(GeometryTools.lengthOf(geometryBefore));
+                if (this.useCol(Col.NUMBER_OF_POINTS_BEFORE)) row.add(geometryBefore.getNumPoints());
+                if (this.useCol(Col.CENTROID_BEFORE)) {
+                    row.add(Double.toString(geometryBefore.getCentroid().getX()));
+                    row.add(Double.toString(geometryBefore.getCentroid().getY()));
+                }
+            } else {
+                if (this.useCol(Col.GEOMETRY_TYPE_BEFORE)) row.add(none);
+                if (this.useCol(Col.AREA_BEFORE)) row.add(none);
+                if (this.useCol(Col.LENGTH_BEFORE)) row.add(none);
+                if (this.useCol(Col.NUMBER_OF_POINTS_BEFORE)) row.add(none);
+                if (this.useCol(Col.CENTROID_BEFORE)) row.addAll(List.of(none, none));
             }
-        } else {
-            if (this.useCol(Col.GEOMETRY_TYPE_AFTER)) row.add(none);
-            if (this.useCol(Col.AREA_AFTER)) row.add(none);
-            if (this.useCol(Col.LENGTH_AFTER)) row.add(none);
-            if (this.useCol(Col.NUMBER_OF_POINTS_AFTER)) row.add(none);
-            if (this.useCol(Col.CENTROID_AFTER)) row.addAll(List.of(none, none));
-        }
-        if (this.useCol(Col.TAGS_BEFORE)) {
-            if (contribution.getEntityBefore() != null) {
-                List<OSMTag> tags = StreamSupport
-                        .stream(contribution.getEntityBefore().getTags().spliterator(), true)
-                        .map(Data.getTagTranslator()::getOSMTagOf)
-                        .collect(Collectors.toList());
-                row.add(new Tags(tags));
-            } else row.add(none);
-        }
-        if (this.useCol(Col.NUMBER_OF_TAGS_BEFORE)) {
-            if (contribution.getEntityBefore() != null) row.add(contribution.getEntityBefore().getRawTags().length / 2);
-            else row.add(none);
-        }
-        if (this.useCol(Col.TAGS_AFTER)) {
-            if (contribution.getEntityAfter() != null) {
-                List<OSMTag> tags = StreamSupport
-                        .stream(contribution.getEntityAfter().getTags().spliterator(), true)
-                        .map(Data.getTagTranslator()::getOSMTagOf)
-                        .collect(Collectors.toList());
-                row.add(new Tags(tags));
-            } else row.add(none);
-        }
-        if (this.useCol(Col.NUMBER_OF_TAGS_AFTER)) {
-            if (contribution.getEntityAfter() != null) row.add(contribution.getEntityAfter().getRawTags().length / 2);
-            else row.add(none);
-        }
-        this.writeRow(row);
-        for (Col col : this.cols) if (!this.colsUnusedWarned.contains(col)) {
-            System.out.println("[WARNING]  Could not output the following column type: " + col);
-            this.colsUnusedWarned.add(col);
+            Geometry geometryAfter = contribution.getGeometryAfter();
+            if (geometryAfter != null && !geometryAfter.isEmpty()) {
+                if (this.useCol(Col.GEOMETRY_TYPE_AFTER)) row.add(geometryAfter.getGeometryType());
+                if (this.useCol(Col.AREA_AFTER)) row.add(GeometryTools.areaOf(geometryAfter));
+                if (this.useCol(Col.LENGTH_AFTER)) row.add(GeometryTools.lengthOf(geometryAfter));
+                if (this.useCol(Col.NUMBER_OF_POINTS_AFTER)) row.add(geometryAfter.getNumPoints());
+                if (this.useCol(Col.CENTROID_AFTER)) {
+                    row.add(Double.toString(geometryAfter.getCentroid().getX()));
+                    row.add(Double.toString(geometryAfter.getCentroid().getY()));
+                }
+            } else {
+                if (this.useCol(Col.GEOMETRY_TYPE_AFTER)) row.add(none);
+                if (this.useCol(Col.AREA_AFTER)) row.add(none);
+                if (this.useCol(Col.LENGTH_AFTER)) row.add(none);
+                if (this.useCol(Col.NUMBER_OF_POINTS_AFTER)) row.add(none);
+                if (this.useCol(Col.CENTROID_AFTER)) row.addAll(List.of(none, none));
+            }
+            if (this.useCol(Col.TAGS_BEFORE)) {
+                if (contribution.getEntityBefore() != null) {
+                    List<OSMTag> tags = StreamSupport
+                            .stream(contribution.getEntityBefore().getTags().spliterator(), true)
+                            .map(Data.getTagTranslator()::getOSMTagOf)
+                            .collect(Collectors.toList());
+                    row.add(new Tags(tags));
+                } else row.add(none);
+            }
+            if (this.useCol(Col.NUMBER_OF_TAGS_BEFORE)) {
+                if (contribution.getEntityBefore() != null) row.add(contribution.getEntityBefore().getRawTags().length / 2);
+                else row.add(none);
+            }
+            if (this.useCol(Col.TAGS_AFTER)) {
+                if (contribution.getEntityAfter() != null) {
+                    List<OSMTag> tags = StreamSupport
+                            .stream(contribution.getEntityAfter().getTags().spliterator(), true)
+                            .map(Data.getTagTranslator()::getOSMTagOf)
+                            .collect(Collectors.toList());
+                    row.add(new Tags(tags));
+                } else row.add(none);
+            }
+            if (this.useCol(Col.NUMBER_OF_TAGS_AFTER)) {
+                if (contribution.getEntityAfter() != null) row.add(contribution.getEntityAfter().getRawTags().length / 2);
+                else row.add(none);
+            }
+            this.writeRow(row);
+            for (Col col : this.cols) if (!this.colsUnusedWarned.contains(col)) {
+                System.out.println("[WARNING]  Could not output the following column type: " + col);
+                this.colsUnusedWarned.add(col);
+            }
+        } catch (Exception e) {
+            System.out.println("[WARNING]  An error occurred while creating the output for the following changeset: " + contribution.getChangesetId());
         }
     }
 }
