@@ -140,10 +140,6 @@ public abstract class Exporter {
     }
 
     public void write(OSMContribution contribution) {
-        if (contribution.getGeometryBefore() != null && contribution.getGeometryBefore().getDimension() != 2) System.out.println("Before" + contribution);
-        if (contribution.getGeometryAfter() != null && contribution.getGeometryAfter().getDimension() != 2) System.out.println("After" + contribution);
-        if (contribution.getGeometryBefore() != null && contribution.getGeometryBefore().getDimension() != 2) return;
-        if (contribution.getGeometryAfter() != null && contribution.getGeometryAfter().getDimension() != 2) return;
         this.cols = new HashSet(this.colsOriginal);
         List<Object> row = new ArrayList<>();
         OSHEntity object = contribution.getOSHEntity();
