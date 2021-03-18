@@ -160,7 +160,13 @@ public abstract class Exporter {
             if (this.useCol(Col.CONTRIBUTOR_USER_ID)) row.add(contribution.getContributorUserId());
             if (this.useCol(Col.TIMESTAMP)) row.add(contribution.getTimestamp().toDate());
             if (this.useCol(Col.OSM_TYPE)) row.add(object.getType().name());
-            if( this.useCol(Col.NUMBER_OF_CHANGES_BEFORE)) row.add(contribution.getEntityBefore().getVersion());
+
+            if(contribution.getEntityBefore() != null){
+                if( this.useCol(Col.NUMBER_OF_CHANGES_BEFORE)) row.add(contribution.getEntityBefore().getVersion());
+            } else {
+                if( this.useCol(Col.NUMBER_OF_CHANGES_BEFORE)) row.add(none);
+            }
+            
             if( this.useCol(Col.NUMBER_OF_CHANGES_AFTER)) row.add(contribution.getEntityAfter().getVersion());
             if (this.useCol(Col.CONTRIBUTION_TYPE)) {
                 row.add(contribution.is(ContributionType.CREATION) ? 1 : 0);
