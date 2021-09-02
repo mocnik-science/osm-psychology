@@ -51,7 +51,7 @@ public class ExporterCSV extends Exporter {
                         .map(key -> key + "=" + tags.get(key))
                         .collect(Collectors.joining(","));
             }
-            new Exception("Could not export CSV: unknown type of object - " + o.toString()).printStackTrace();
+            new Exception("Could not export CSV: unknown type of element - " + o.toString()).printStackTrace();
             return "";
         }).collect(Collectors.toList());
         this.csvWriter.writeNext(rowString.toArray(new String[0]));

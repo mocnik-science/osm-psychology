@@ -60,7 +60,7 @@ public abstract class Exporter {
         this.cols = new HashSet();
         List<String> header = new ArrayList<>();
         if (this.initCol(Col.OSM_ID)) header.add("OsmID");
-        if (this.initCol(Col.OBJECT_ID)) header.add("ObjectID");
+        if (this.initCol(Col.ELEMENT_ID)) header.add("ElementID");
         if (this.initCol(Col.CHANGESET_ID, queryType, QueryType.CONTRIBUTION)) header.add("ChangesetID");
         if (this.initCol(Col.CONTRIBUTOR_USER_ID, queryType, QueryType.CONTRIBUTION)) header.add("ContributorUserID");
         if (this.initCol(Col.TIMESTAMP)) header.add("Timestamp");
@@ -104,7 +104,7 @@ public abstract class Exporter {
             List<Object> row = new ArrayList<>();
             OSMEntity object = entity.getEntity();
             if (this.useCol(Col.OSM_ID)) row.add(object.getType().toString().toLowerCase() + "/" + object.getId());
-            if (this.useCol(Col.OBJECT_ID)) row.add(object.getId());
+            if (this.useCol(Col.ELEMENT_ID)) row.add(object.getId());
             if (this.useCol(Col.TIMESTAMP)) row.add(object.getTimestamp().toDate());
             if (this.useCol(Col.OSM_TYPE)) row.add(object.getType().name());
             if (this.useCol(Col.NUMBER_OF_CHANGES)) row.add(object.getVersion());
@@ -155,7 +155,7 @@ public abstract class Exporter {
             List<Object> row = new ArrayList<>();
             OSHEntity object = contribution.getOSHEntity();
             if (this.useCol(Col.OSM_ID)) row.add(object.getType().toString().toLowerCase() + "/" + contribution.getOSHEntity().getId());
-            if (this.useCol(Col.OBJECT_ID)) row.add(object.getId());
+            if (this.useCol(Col.ELEMENT_ID)) row.add(object.getId());
             if (this.useCol(Col.CHANGESET_ID)) row.add(contribution.getChangesetId());
             if (this.useCol(Col.CONTRIBUTOR_USER_ID)) row.add(contribution.getContributorUserId());
             if (this.useCol(Col.TIMESTAMP)) row.add(contribution.getTimestamp().toDate());

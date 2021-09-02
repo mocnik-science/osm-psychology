@@ -10,7 +10,7 @@ BoundingBox sets a bounding box to a given longitude and latitude and naming the
 ## Usage
 
 ```java
-BoundingBox objectName = new BoundingBox(name, minLon, minLat, maxLon, maxLat);
+BoundingBox bb = new BoundingBox(name, minLon, minLat, maxLon, maxLat);
 ```
 
 ## Arguments

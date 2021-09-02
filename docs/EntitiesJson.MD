@@ -4,7 +4,7 @@
 
 ## Description
 
-ExportEntities.json exports selected snapshot data from the OSHDB into a JSON file. In the exported data set every row represents an object (i.e. an OSM entity), its information represents the information this object contained at a given point in time.
+ExportEntities.json exports selected snapshot data from the OSHDB into a JSON file. In the exported data set every row represents an OSM element, its information represents the information this element contained at a given point in time.
 
 ## Usage
 
@@ -16,9 +16,9 @@ ExportEntities.json(new strategy, boundingbox, isoDate, columns);
 
 | arguments   | description                                                  |
 | ----------- | ------------------------------------------------------------ |
-| strategy    | the strategy used for exporting. StrategyBuildings() exports buildings, StrategyRoads() exports roads, StrategyNodes() exports nodes. Nodes describe places that can be mapped by a single point in space, e.g. trees, traffic lights, or amenities. For further characteristics and a definition of 'node' in OSM see <https://wiki.openstreetmap.org/wiki/Node>. <br />StrategyAll() exports all OSM objects, including buildings, roads, and nodes, as well as further objects such as parks, forests etc. |
+| strategy    | the strategy used for exporting. StrategyBuildings() exports buildings, StrategyRoads() exports roads, StrategyNodes() exports nodes. Nodes describe places that can be mapped by a single point in space, e.g. trees, traffic lights, or amenities. For further characteristics and a definition of 'node' in OSM see <https://wiki.openstreetmap.org/wiki/Node>. <br />StrategyAll() exports all OSM elements, including buildings, roads, and nodes, as well as further elements such as parks, forests etc. |
 | boundingbox | the bounding box describes the area of interest for which the data will be exported. The bounding box sets the name of the area, as well as minimum latitude, minimum longitude, maximum latitude, and maximum longitude of the area of interest. If no bounding box is defined, the whole OSHDB file will be used in terms of location. |
-| isoDate     | date representing the point in time of which the snapshot should be made. For every object / entity the latest version until that date is represented in the data. |
+| isoDate     | date representing the point in time of which the snapshot should be made. For every element the latest version until that date is represented in the data. |
 | columns     | the columns to be exported for every entry. A list of all columns and column combinations can be found [here](cols.md). |
 
 
