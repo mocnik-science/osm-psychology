@@ -4,8 +4,8 @@
 require(RJSONIO)
 require(tidyverse)
 
-#set working directory to directory with json file
-setwd("directory/of/json/data")
+# set working directory to directory with json file
+setwd("path/to/json/data")
 
 OSMjsonToDataframe <- function(file = file) {
   # read json to tibble in R
@@ -27,13 +27,13 @@ OSMjsonToDataframe <- function(file = file) {
   data <- data %>% 
     select(all_of(sorting))
   
-  #convert timestamp from character to integer time format
+  # convert timestamp from character to integer time format
   if("Timestamp" %in% colnames(data)){
     data$Timestamp <-
       parse_datetime(as.character(data$Timestamp))
   }
 
-  #convert all columns to according format
+  # convert all columns to according format
   data <- data %>%
     mutate_at(.vars = vars(contains("Centroid")), #CentroidLatBefore,CentroidLatAfter,CentroidLonBefore,CentroidLonAfter
               .funs = function(x)as.numeric(x)) %>%
@@ -43,7 +43,7 @@ OSMjsonToDataframe <- function(file = file) {
               .funs = function(x)(x/2))
   
   
-  #compute tags with empty list for no entry
+  # compute tags with empty list for no entry
   if("TagsBefore" %in% colnames(data)){
     TagsBeforeR <- list()
     for(i in 1: length(data$OsmID)){
