@@ -32,7 +32,7 @@
         <dependency>
             <groupId>org.heigit.bigspatialdata</groupId>
             <artifactId>oshdb-api</artifactId>
-            <version>0.5.1</version>
+            <version>0.5.9</version>
         </dependency>
         <dependency>
             <groupId>com.opencsv</groupId>
