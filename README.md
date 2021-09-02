@@ -2,28 +2,36 @@
 
 The application `OSM-Psychology` provides a simple tool to generate CSV and JSON files about the OpenStreetMap data (map snapshot and history) that can be used for psychological research.
 
-## Installation and preparation
+## Installation and First Steps
 
-For accessing the OpenStreetMap data, you will require the current [Java Development Kit](https://www.oracle.com/technetwork/java/javase/downloads/index.html), and an Integrated Development Environment (IDE) for Java with [Maven Integration](https://maven.apache.org/) installed. Since the IntelliJ IDEA IDE (as recommended below) has Maven included, no separate installation of Maven is necessary.
+To prepare for running the software, some preparations need to be made:
 
-For Java beginners, we recommend to follow these instructions: 
+1. Download and install the current [Java Development Kit](https://www.oracle.com/technetwork/java/javase/downloads/index.html).
+2. Download and install [IntelliJ IDEA IDE](https://www.jetbrains.com/idea/download/).
+  * During the installation settings, tick the checkbox for .java to be associated with IntelliJ.
+  * When running IntelliJ the first time, a message might appear in the lower right corner. Click "Skip All and Set Default".
+3. Download a OpenStreetMap database from [ohsome Data Repository](http://downloads.ohsome.org/v0.5/) and save it to a directory of your choice. Due to file size, it is recommended to download a file that covers your area of interest.
 
-1. Download `OSM-Psychology` by clicking on "Clone or Download" and select "Download ZIP".
-2. Unzip the archive in a directory of your choice. This will be the location where the program is stored and exported files are saved to.
-3. Download the OpenStreetMap data from [ohsome Data Repository](http://downloads.ohsome.org/v0.5/) and save it to a directory of your choice. Due to file size, we recommend to download the smallest possible file for your research. In this documentation, the OSHDB file for Heidelberg is used in all examples.
-4. Download and install [IntelliJ IDEA IDE](https://www.jetbrains.com/idea/download/). During the installation settings, tick the checkbox for .java to be associated with IntelliJ. 
-5. Run IntelliJ and click "Skip All and Set Default" in the lower right corner. You can previously set an UI theme.
-6. Now the start screen of IntelliJ should appear. Click "Open" and navigate to the directory where you previously exported the program files.
-7. Follow the path structure on the right `/src/main/java/com.osm.psychology` and open the file `Main`. You only need to edit this file to extract the data!
+Then, you can start setting up your project.  
 
-For specifying an area of interest in case not the whole data is used, a bounding box is needed, which can be obtained [here](http://norbertrenner.de/osm/bbox.html) or can be exported from [OpenStreetMap](https://www.openstreetmap.org/).
+4. Download the file [myOSMPsychology.zip](https://minhaskamal.github.io/DownGit/#/home?url=https://github.com/mocnik-science/osm-psychology/tree/master/myOSMPsychology) and extract it to a directory of your choice. This will be the location where the files are exported and saved to.
+5. Start IntelliJ, click "Open", and navigate to the directory where you previously exported the program files.
+6. Follow the path structure on the right `/src/main/java/com.osm.myPsychology` and edit the file `Main`.
+   * Open the file by clicking it.
+   * Adapt the content of this file by replacing `/path/to/database/baden-wuerttemberg.oshdb.mv.db` by the path of the database you downloaded in Step 3.
+   * Adapt the commands for extracting the data according to your needs.
+7. Run the file `Main` by clicking `run` in its context menu (right click).
+
+Below, you will find several examples and further documentation.
+
+To identify the coordinates for a bounding box – this is needed to specify an area of interest – you can use the [the BoundingBox tool](https://boundingbox.klokantech.com) or export the coordinates from [OpenStreetMap](https://www.openstreetmap.org).
 
 ## Example 1
 
 Get entities in the data (i.e., in Heidelberg) at 2019-01-01 and export those with all available information to CSV.
 
 ```java
-Data.load("C:/path/to/your/OSMdata/heidelberg.oshdb.mv.db");
+Data.load("/path/to/your/OSMdata/heidelberg.oshdb.mv.db");
 ExportEntities.csv(new StrategyAll(), "2019-01-01", Col.ALL);
 ```
 
@@ -33,7 +41,7 @@ ExportEntities.csv(new StrategyAll(), "2019-01-01", Col.ALL);
 Get all changes made to roads in Heidelberg in 2008 and export those with basic information to a CSV-formatted file.
 
 ```java
-Data.load("C:/path/to/your/OSMdata/Heidelberg.oshdb.mv.db");
+Data.load("/path/to/your/OSMdata/Heidelberg.oshdb.mv.db");
 ExportContributions.csv(new StrategyRoads(), "2008-01-01", "2008-12-31", Col.BASIC_INFORMATION);
 ```
 
@@ -42,7 +50,7 @@ ExportContributions.csv(new StrategyRoads(), "2008-01-01", "2008-12-31", Col.BAS
 Get all changes made to nodes in Eppelheim, a town near Heidelberg, and export them with basic information and tag information to a JSON-formatted file.
 
 ```java
-Data.load("C:/path/to/your/OSMdata/Heidelberg.oshdb.mv.db");
+Data.load("/path/to/your/OSMdata/Heidelberg.oshdb.mv.db");
 BoundingBox eppelheim = new BoundingBox("Eppelheim", 8.6159, 49.3868, 8.6555, 49.4153);
 ExportContributions.json(new StrategyNodes(), eppelheim, "2008-01-01", "2008-12-31", Col.BASIC_INFORMATION, Col.TAG_INFORMATION);
 ```
@@ -60,7 +68,7 @@ Further documentation for the functions can be found on these pages.
 
 ## Related Publications
 
-* todo
+* tba
 
 ## Author
 
