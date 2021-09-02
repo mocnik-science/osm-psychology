@@ -65,8 +65,10 @@ Further documentation for the functions can be found on these pages.
 
 ## Author
 
-This application is written and maintained by Maren Mayer, <maren.mayer@students.uni-mannheim.de>, Franz-Benjamin Mocnik, <mail@mocnik-science.net>, and Daniel W Heck <heck@uni-mannheim.de>.
+This application is written and maintained by Franz-Benjamin Mocnik <mail@mocnik-science.net>, Maren Mayer <maren.mayer@students.uni-mannheim.de>, and Daniel W Heck <heck@uni-mannheim.de>.
 
-(c) by Maren Mayer and Franz-Benjamin Mocnik, 2019.
+For questions, please approach Maren Mayer <maren.mayer@students.uni-mannheim.de>.
+
+(c) by Franz-Benjamin Mocnik, Maren Mayer, and Daniel W Heck, 2019–2021.
 
 The code is licensed under the [MIT license](https://github.com/mocnik-science/osm-psychology/blob/master/LICENSE).
