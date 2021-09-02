@@ -1,19 +1,19 @@
-### Reading OSM data saved as json to R
+### Reading OSM data saved as JSON to R
 
 # load necessary packages
 require(RJSONIO)
 require(tidyverse)
 
-# set working directory to directory with json file
+# set working directory to directory with JSON file
 setwd("path/to/json/data")
 
 OSMjsonToDataframe <- function(file = file) {
-  # read json to tibble in R
+  # read JSON to tibble in R
   data <-
-    RJSONIO::fromJSON(file, nullValue = NA)$data %>% # read json to R as list
+    RJSONIO::fromJSON(file, nullValue = NA)$data %>% # read JSON to R as list
     transpose() %>% # transpose list to shape of data frame / tibble
     as_tibble() %>% # convert into tibble
-    mutate_at(.vars = vars(-starts_with("Tags")),# encode lists as vectors
+    mutate_at(.vars = vars(-starts_with("Tags")), # encode lists as vectors
               .funs = function(x)unlist(x))
   
   # sort variables into a meaningful order
@@ -35,11 +35,11 @@ OSMjsonToDataframe <- function(file = file) {
 
   # convert all columns to according format
   data <- data %>%
-    mutate_at(.vars = vars(contains("Centroid")), #CentroidLatBefore,CentroidLatAfter,CentroidLonBefore,CentroidLonAfter
+    mutate_at(.vars = vars(contains("Centroid")), # CentroidLatBefore,CentroidLatAfter,CentroidLonBefore,CentroidLonAfter
               .funs = function(x)as.numeric(x)) %>%
-    mutate_at(.vars = vars(contains("GeometryType")), #GeometryTypeBefore, GeometryTypeAfter
+    mutate_at(.vars = vars(contains("GeometryType")), # GeometryTypeBefore, GeometryTypeAfter
               .funs = function(x)as.factor(x)) %>%
-    mutate_at(.vars = vars(contains("NumberOfTags")), #NumberOfTagsBefore, NumberOfTagsAfter
+    mutate_at(.vars = vars(contains("NumberOfTags")), # NumberOfTagsBefore, NumberOfTagsAfter
               .funs = function(x)(x/2))
   
   
@@ -47,8 +47,8 @@ OSMjsonToDataframe <- function(file = file) {
   if("TagsBefore" %in% colnames(data)){
     TagsBeforeR <- list()
     for(i in 1: length(data$OsmID)){
-      if(is.na(data$TagsBefore[[i]][1])){ #detect NAs
-        TagsBeforeR[[i]] <- vector("character", 0L) #change NA to empty character vector
+      if(is.na(data$TagsBefore[[i]][1])){ # detect NAs
+        TagsBeforeR[[i]] <- vector("character", 0L) # change NA to empty character vector
         }else{
           TagsBeforeR[[i]] <- data$TagsBefore[[i]]
         }
@@ -59,8 +59,8 @@ OSMjsonToDataframe <- function(file = file) {
   if("TagsAfter" %in% colnames(data)){
     TagsAfterR <- list()
     for(i in 1: length(data$OsmID)){
-      if(is.na(data$TagsAfter[[i]][1])){ #detect NAs
-        TagsAfterR[[i]] <- vector("character", 0L) #change NA to empty character vector
+      if(is.na(data$TagsAfter[[i]][1])){ # detect NAs
+        TagsAfterR[[i]] <- vector("character", 0L) # change NA to empty character vector
       }else{
         TagsAfterR[[i]] <- data$TagsAfter[[i]]
       }
@@ -71,8 +71,8 @@ OSMjsonToDataframe <- function(file = file) {
   if("Tags" %in% colnames(data)){
     TagsR <- list()
     for(i in 1: length(data$OsmID)){
-      if(is.na(data$Tags[[i]][1])){ #detect NAs
-        TagsR[[i]] <- vector("character", 0L) #change NA to empty character vector
+      if(is.na(data$Tags[[i]][1])){ # detect NAs
+        TagsR[[i]] <- vector("character", 0L) # change NA to empty character vector
       }else{
         TagsR[[i]] <- data$Tags[[i]]
       }

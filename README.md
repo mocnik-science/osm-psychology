@@ -1,11 +1,10 @@
 # OSM-Psychology
 
-The application `OSM-Psychology` provides a simple tool to generate csv and json files about the OpenStreetMap data (map snapshot and history) that can be used for psychological research.
+The application `OSM-Psychology` provides a simple tool to generate CSV and JSON files about the OpenStreetMap data (map snapshot and history) that can be used for psychological research.
 
 ## Installation and preparation
 
-For accessing the OpenStreetMap data, you will require the current [Java Development Kit](https://www.oracle.com/technetwork/java/javase/downloads/index.html), and an Integrated Development Environment (IDE) for Java with [Maven Integration](https://maven.apache.org/) installed. Since the IntelliJ IDEA IDE (as recommended below) has Maven included, no separate installation of Maven is necessary. 
-
+For accessing the OpenStreetMap data, you will require the current [Java Development Kit](https://www.oracle.com/technetwork/java/javase/downloads/index.html), and an Integrated Development Environment (IDE) for Java with [Maven Integration](https://maven.apache.org/) installed. Since the IntelliJ IDEA IDE (as recommended below) has Maven included, no separate installation of Maven is necessary.
 
 For Java beginners, we recommend to follow these instructions: 
 
@@ -21,7 +20,7 @@ For specifying an area of interest in case not the whole data is used, a boundin
 
 ## Example 1
 
-Get entities in the data (i.e., in Heidelberg) at 2019-01-01 and export those with all available information to csv.
+Get entities in the data (i.e., in Heidelberg) at 2019-01-01 and export those with all available information to CSV.
 
 ```java
 Data.load("C:/path/to/your/OSMdata/heidelberg.oshdb.mv.db");
@@ -31,7 +30,7 @@ ExportEntities.csv(new StrategyAll(), "2019-01-01", Col.ALL);
 
 ## Example 2
 
-Get all changes made to roads in Heidelberg in 2008 and export those with basic information to a csv-formatted file.
+Get all changes made to roads in Heidelberg in 2008 and export those with basic information to a CSV-formatted file.
 
 ```java
 Data.load("C:/path/to/your/OSMdata/Heidelberg.oshdb.mv.db");
@@ -40,7 +39,7 @@ ExportContributions.csv(new StrategyRoads(), "2008-01-01", "2008-12-31", Col.BAS
 
 ## Example 3
 
-Get all changes made to nodes in Eppelheim, a town near Heidelberg, and export them with basic information and tag information to a json-formatted file.
+Get all changes made to nodes in Eppelheim, a town near Heidelberg, and export them with basic information and tag information to a JSON-formatted file.
 
 ```java
 Data.load("C:/path/to/your/OSMdata/Heidelberg.oshdb.mv.db");

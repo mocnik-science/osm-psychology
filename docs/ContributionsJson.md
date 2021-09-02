@@ -24,7 +24,7 @@ ExportContributions.json(new strategy, boundingbox,  startDate, endDate, columns
 
 ## Details
 
-For extracting tag information, json format is recommended. An R script to read the json file to R is provided [here](scr-r/readJSONtoR.R).
+For extracting tag information, JSON format is recommended. An R script to read the JSON file to R is provided as [scr-r/readJSONtoR.R](scr-r/readJSONtoR.R).
 
 ## Examples
 
