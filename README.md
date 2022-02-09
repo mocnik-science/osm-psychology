@@ -10,7 +10,7 @@ To prepare for running the software, some preparations need to be made:
 2. Download and install [IntelliJ IDEA IDE](https://www.jetbrains.com/idea/download/).
   * During the installation settings, tick the checkbox for .java to be associated with IntelliJ.
   * When running IntelliJ the first time, a message might appear in the lower right corner. Click "Skip All and Set Default".
-3. Download a OpenStreetMap database from [ohsome Data Repository](http://downloads.ohsome.org/v0.5/) and save it to a directory of your choice. Due to file size, it is recommended to download a file that covers your area of interest.
+3. Download a OpenStreetMap database from [ohsome Data Repository](https://downloads.ohsome.org/) and save it to a directory of your choice. Due to file size, it is recommended to download a file that covers your area of interest.
 
 Then, you can start setting up your project.  
 
